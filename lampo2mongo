@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+
+import os
+import time
+import syslog
+import pymongo 
+from pymongo import Connection
+import soittilaFiles as f
+import datetime
+
+def getAika():
+    now = datetime.datetime.now()
+    aika = now.strftime("%H:%M:%S-%d.%m.%Y")
+    return aika
+
+def getTemp(anturi):
+    f = open(anturi)
+    s = f.readline()
+    d = round(float(s.strip()), 0)
+    i = int(d)
+    return i    
+
+try:
+    while(1):
+        syslog.syslog('Lampötilojen Processing started')
+        connection = Connection('localhost', 27017)
+        db = connection.soittila_lampotilat
+        uudet_lampotilat = [{"anturi": "puukattila","lampotila": getTemp(f.puukattila),"date": getAika()},
+            {"anturi": "varaajaUp","lampotila": getTemp(f.varaajaUp),"date": getAika()},
+            {"anturi": "varaajaDown","lampotila": getTemp(f.varaajaDown),"date": getAika()},
+            {"anturi": "kattilaGold","lampotila": getTemp(f.kattilaGold),"date": getAika()},
+            {"anturi": "kattilaHot","lampotila": getTemp(f.kattilaHot),"date": getAika()},
+            {"anturi": "patteriL","lampotila": getTemp(f.patteriL),"date": getAika()},
+            {"anturi": "LLlahto","lampotila": getTemp(f.LLlahto),"date": getAika()},
+            {"anturi": "kattilaSw","tila": getTemp(f.kattilaSw),"date": getAika()},
+            {"anturi": "laskuriA","lukema": getTemp(f.laskuriA),"date": getAika()},
+            {"anturi": "laskuriB","lukema": getTemp(f.laskuriB),"date": getAika()},
+            {"anturi": "maalampo","lampotila": getTemp(f.maalampo),"date": getAika()},
+            {"anturi": "ulkoP","lampotila": getTemp(f.ulkoP),"date": getAika()},
+            {"anturi": "ulkoE","lampotila": getTemp(f.ulkoE),"date": getAika()},
+            {"anturi": "akWcLattia","lampotila": getTemp(f.akWcLattia),"date": getAika()},
+            {"anturi": "khh","lampotila": getTemp(f.khh),"date": getAika()},
+            {"anturi": "olohuone","lampotila": getTemp(f.olohuone),"date": getAika()}, 
+            {"anturi": "makuuhuone","lampotila": getTemp(f.makuuhuone),"date": getAika()}, 
+            {"anturi": "sauna","lampotila": getTemp(f.sauna),"date": getAika()}]
+        lampotilat = db.soittila_lampotilat
+        lampotilat.insert(uudet_lampotilat)
+        syslog.syslog('Lämpötilat päivitetty')
+        time.sleep(600)
+
+except IOError:
+    syslog.syslog(syslog.LOG_ERR, 'Ollaan IO Errorissa')
