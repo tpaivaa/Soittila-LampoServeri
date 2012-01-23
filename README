@@ -1,0 +1,20 @@
+Lamposerveri:
+Controls heating on my home via http
+
+Arduino Duemillanove connected to Relay module which has 14 Realays
+Relays controls power on floor heating 
+
+GET http://host.domain/rele/Relay No
+GET http://host.domain/on/Relay No
+GET http://host.domain/off/Relay No
+
+
+simply :
+to view relay 1 status (http://10.10.10.54/rele/1)
+to switch on relay 1 (http://10.10.10.54/on/1)
+to switch off relay 1 (http://10.10.10.54/off/1)
+
+Lampo2Mongo:
+
+Logs 1 wire temperature and other sensors status/state to Mongo database with pymongo. 
+
