@@ -25,6 +25,12 @@ def getTimeStamp():
     t = datetime.datetime.now()
     return t
 
+def dateToStamp(date):
+    stamppy = int(time.mktime(time.strptime(date, '%H:%M:%S-%d.%m.%Y')))
+    return stamppy
+# dateToStamp('19:02:00-23.01.2012')
+
+
 try:
     while(1):
         syslog.syslog('Lampötilojen Processing started')
