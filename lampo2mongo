@@ -21,29 +21,33 @@ def getTemp(anturi):
     i = int(d)
     return i    
 
+def getTimeStamp():
+    t = datetime.datetime.now()
+    return t
+
 try:
     while(1):
         syslog.syslog('Lampötilojen Processing started')
         connection = Connection('localhost', 27017)
         db = connection.soittila_lampotilat
-        uudet_lampotilat = [{"anturi": "puukattila","lampotila": getTemp(f.puukattila),"date": getAika()},
-            {"anturi": "varaajaUp","lampotila": getTemp(f.varaajaUp),"date": getAika()},
-            {"anturi": "varaajaDown","lampotila": getTemp(f.varaajaDown),"date": getAika()},
-            {"anturi": "kattilaGold","lampotila": getTemp(f.kattilaGold),"date": getAika()},
-            {"anturi": "kattilaHot","lampotila": getTemp(f.kattilaHot),"date": getAika()},
-            {"anturi": "patteriL","lampotila": getTemp(f.patteriL),"date": getAika()},
-            {"anturi": "LLlahto","lampotila": getTemp(f.LLlahto),"date": getAika()},
-            {"anturi": "kattilaSw","tila": getTemp(f.kattilaSw),"date": getAika()},
-            {"anturi": "laskuriA","lukema": getTemp(f.laskuriA),"date": getAika()},
-            {"anturi": "laskuriB","lukema": getTemp(f.laskuriB),"date": getAika()},
-            {"anturi": "maalampo","lampotila": getTemp(f.maalampo),"date": getAika()},
-            {"anturi": "ulkoP","lampotila": getTemp(f.ulkoP),"date": getAika()},
-            {"anturi": "ulkoE","lampotila": getTemp(f.ulkoE),"date": getAika()},
-            {"anturi": "akWcLattia","lampotila": getTemp(f.akWcLattia),"date": getAika()},
-            {"anturi": "khh","lampotila": getTemp(f.khh),"date": getAika()},
-            {"anturi": "olohuone","lampotila": getTemp(f.olohuone),"date": getAika()}, 
-            {"anturi": "makuuhuone","lampotila": getTemp(f.makuuhuone),"date": getAika()}, 
-            {"anturi": "sauna","lampotila": getTemp(f.sauna),"date": getAika()}]
+        uudet_lampotilat = [{"anturi": "puukattila","lampotila": getTemp(f.puukattila),"date": getAika(), "stamp": getTimeStamp()},
+            {"anturi": "varaajaUp","lampotila": getTemp(f.varaajaUp),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "varaajaDown","lampotila": getTemp(f.varaajaDown),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "kattilaGold","lampotila": getTemp(f.kattilaGold),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "kattilaHot","lampotila": getTemp(f.kattilaHot),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "patteriL","lampotila": getTemp(f.patteriL),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "LLlahto","lampotila": getTemp(f.LLlahto),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "kattilaSw","tila": getTemp(f.kattilaSw),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "laskuriA","lukema": getTemp(f.laskuriA),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "laskuriB","lukema": getTemp(f.laskuriB),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "maalampo","lampotila": getTemp(f.maalampo),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "ulkoP","lampotila": getTemp(f.ulkoP),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "ulkoE","lampotila": getTemp(f.ulkoE),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "akWcLattia","lampotila": getTemp(f.akWcLattia),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "khh","lampotila": getTemp(f.khh),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "olohuone","lampotila": getTemp(f.olohuone),"date": getAika(),"stamp": getTimeStamp()}, 
+            {"anturi": "makuuhuone","lampotila": getTemp(f.makuuhuone),"date": getAika(),"stamp": getTimeStamp()}, 
+            {"anturi": "sauna","lampotila": getTemp(f.sauna),"date": getAika(),"stamp": getTimeStamp()}]
         lampotilat = db.soittila_lampotilat
         lampotilat.insert(uudet_lampotilat)
         syslog.syslog('Lämpötilat päivitetty')
