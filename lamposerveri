@@ -1,0 +1,89 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+import os
+import httplib
+import time
+import syslog
+
+
+puukattila = '/var/www/server/puuKattila.html'
+varaajaUp = '/var/www/server/varaajaUp.html'
+varaajaDown = '/var/www/server/varaajaDown.html'
+kattilaGold = '/var/www/server/kattilaCold.html'
+kattilaHot = '/var/www/server/kattilaHot.html'
+patteriL = '/var/www/server/patteriL.html'
+LLlahto = '/var/www/server/LLlahto.html'
+kattilaSw = '/var/www/server/kattilaSw.html'
+laskuriA = '/var/www/server/laskuriA.html'
+laskuriB = '/var/www/server/laskuriB.html'
+maalampo = '/var/www/server/maalampo.html'
+ulkoE = '/var/www/server/ulkoE.html'
+ulkoP = '/var/www/server/ulkoP.html'
+akWcLattia = '/var/www/server/akWcLattia.html'
+khh = '/var/www/server/khh.html'
+olohuone = '/var/www/server/olohuone.html'
+makuuhuone = '/var/www/server/makuuhuone.html'
+sauna = '/var/www/server/sauna.html'
+
+khhYraja = 23
+khhAraja = 22
+khhLattiaYraja = 33
+khhLattiaAraja = 30
+
+# Change float number from OWFS temperature file to integer
+def toint(file):
+    f = open(file)
+    s = f.readline()
+    d = round(float(s.strip()), 0)
+    i = int(d)
+    return i
+
+def releTila(relay):
+    relaya = str(relay)
+    connection = httplib.HTTPConnection('10.10.10.54')
+    connection.request('GET', '/rele/'+ relaya)
+    tila = connection.getresponse()
+    tila = tila.read()
+    connection.close()
+    relaya = int(relaya)
+    tila = int(tila)
+    if relaya < 5 and tila < 2:
+        tila = 0
+    if tila == 1023:
+        tila = 1    
+    return str(tila)
+    
+def saadaOn(rele):
+    relaya = str(rele)
+    connection = httplib.HTTPConnection('10.10.10.54')
+    connection.request('GET', '/on/'+ relaya)
+    response = connection.getresponse()
+    resp = response.read()
+    connection.close()    
+
+def saadaOff(rele):
+    relaya = str(rele)
+    connection = httplib.HTTPConnection('10.10.10.54')
+    connection.request('GET', '/off/'+ relaya)
+    response = connection.getresponse()
+    resp = response.read()
+    connection.close()
+
+try:
+    while(1):
+        syslog.syslog('Lampötilojen Säätö Processing started ')
+#        print '<******************************************'
+#        print 'khh lattia : ' + str(toint(akWcLattia))
+#        print 'khh : ' + str(toint(khh))
+#        print 'releen 2 tila : ' + releTila(2)
+        if ((toint(khh) < khhYraja) and (toint(akWcLattia) < khhLattiaYraja)) and (releTila(2) == '0'):
+            saadaOn(2)
+            print 'Säädetään rele 2 on'
+        if ((toint(khh) > khhAraja) and (toint(akWcLattia) > khhLattiaAraja)) and (releTila(2) == '1'):
+            saadaOff(2)
+            print 'Säädetään rele 2 off'
+#        print '******************************************>'    
+        time.sleep(600)
+    
+except IOError:
+        syslog.syslog(syslog.LOG_ERR, 'Ollaan IO Errorissa lamposerveri_16_01_2012.py')
