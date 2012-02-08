@@ -1,8 +1,14 @@
 Lamposerveri:
-Controls heating on my home via http
+Controls heating on my home: 
+analysing temperatures and time of the day and other statistics to command relayServer via http
+Tempertures measured with 1wire sensors (Dallas semiconductor DS1820) 
 
-Arduino Duemillanove connected to Relay module which has 14 Realays
-Relays controls power on floor heating 
+1wire:
+buss is connected with USB and read with owfs (http://owfs.org/)
+
+RelayServer:
+Arduino Duemillanove connected to Relay module which has 14 Relays
+Relays controls power on floor heating(Vesikierto, piiri säätimet jakotukissa) 
 
 GET http://host.domain/rele/Relay No
 GET http://host.domain/on/Relay No
@@ -18,3 +24,13 @@ Lampo2Mongo:
 
 Logs 1 wire temperature and other sensors status/state to Mongo database with pymongo. 
 
+Setup:
+
+Ericsson Business Phone2000 rack with IAS card
+Debian 6.0 (squeeze) (http://en.wikipedia.org/wiki/Debian)
+Arduino Duemillanove (http://arduino.cc/en/Main/arduinoBoardDuemilanove)
+RelayCard (4 relay)
+RelayCard (8 relay)
+DS9490R USB Adapter (http://owfs.org/index.php?page=usb-ds9490r)
+DS18B20: (http://www.maxim-ic.com/datasheet/index.mvp/id/2812) ~ 8
+DS18S20: (http://www.maxim-ic.com/datasheet/index.mvp/id/2815) ~ 7
