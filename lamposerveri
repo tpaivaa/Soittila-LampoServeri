@@ -4,7 +4,7 @@ import os
 import httplib
 import time
 import syslog
-
+from time import strftime,localtime
 
 puukattila = '/var/www/server/puuKattila.html'
 varaajaUp = '/var/www/server/varaajaUp.html'
@@ -37,6 +37,13 @@ def toint(file):
     d = round(float(s.strip()), 0)
     i = int(d)
     return i
+
+def getLampo(file):
+    f = open(file)
+    s = f.readline()
+    d = round(float(s.strip()), 0)
+    l = str(d)
+    return l
 
 def releTila(relay):
     relaya = str(relay)
@@ -78,11 +85,19 @@ try:
 #        print 'releen 2 tila : ' + releTila(2)
         if ((toint(khh) < khhYraja) and (toint(akWcLattia) < khhLattiaYraja)) and (releTila(2) == '0'):
             saadaOn(2)
-            print 'Säädetään rele 2 on'
+            syslog.syslog('Säädettiin rele 2 on ** Lattia ' + getLampo(akWcLattia))
+#            print 'Säädetään rele 2 on'
         if ((toint(khh) > khhAraja) and (toint(akWcLattia) > khhLattiaAraja)) and (releTila(2) == '1'):
             saadaOff(2)
-            print 'Säädetään rele 2 off'
+            syslog.syslog('Säädettiin rele 2 off ** Lattia ' + getLampo(akWcLattia))
+#            print 'Säädetään rele 2 off'
 #        print '******************************************>'    
+        if ((time.strftime("%H%M", localtime()) > '1800') and (releTila(1) == '0'):
+            saadaOn(1)
+            syslog.syslog('Säädettiin rele 1 on ** Sauna lämpö ' + getLampo(sauna))
+        if ((time.strftime("%H%M", localtime()) < '1800') and (time.strftime("%H%M", localtime()) > '0200') and (releTila(1) == '1'):
+            saadaOff(1)
+            syslog.syslog('Säädettiin rele 1 off ** Sauna lämpö ' + getLampo(sauna))
         time.sleep(600)
     
 except IOError:
