@@ -28,6 +28,7 @@ Setup:
 
 Ericsson Business Phone2000 rack with IAS card
 Debian 6.0 (squeeze) (http://en.wikipedia.org/wiki/Debian)
+	(owfs,Nginx, ... )
 Arduino Duemillanove (http://arduino.cc/en/Main/arduinoBoardDuemilanove)
 RelayCard (4 relay)
 RelayCard (8 relay)
