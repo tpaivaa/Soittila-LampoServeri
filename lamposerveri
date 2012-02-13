@@ -78,13 +78,13 @@ def saadaOff(rele):
 
 try:
     while(1):
-        syslog.syslog('Lampötilojen Säätö Processing started')
         khhLampo = toint(khh)
         akWcLattiaLampo = toint(akWcLattia)
         saunaLampo = getLampo(sauna)
         aikaNyt = time.strftime("%H%M", localtime())
         rele2 = releTila(2)
         rele1 = releTila(1)
+        syslog.syslog('Lampötilojen Säätö Processing started')
         if (akWcLattiaLampo < khhLattiaAraja) and (rele2 == '0'):
             saadaOn(2)
             syslog.syslog('Säädettiin rele 2 on ** Lattia ' + akWcLattiaLampo)
@@ -97,6 +97,7 @@ try:
         if (aikaNyt < '1800') and (aikaNyt > '0200') and (rele1 == '1'):
             saadaOff(1)
             syslog.syslog('Säädettiin rele 1 off ** Sauna lämpö ' + saunaLampo)
+        syslog.syslog('Lampötilojen Säätö Processing: Aloitetaan 600 ms Sleep')
         time.sleep(600)
     
 except IOError:
