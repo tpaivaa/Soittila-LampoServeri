@@ -85,6 +85,7 @@ try:
         aikaNyt = time.strftime("%H%M", localtime())
         rele2 = releTila(2)
         rele1 = releTila(1)
+	rele3 = releTila(3)
         syslog.syslog('Lampötilojen Säätö Processing started')
         if (akWcLattiaLampo < khhLattiaAraja) and (rele2 == '0'):
             saadaOn(2)
