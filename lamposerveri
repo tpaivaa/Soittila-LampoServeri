@@ -27,8 +27,8 @@ sauna = '/var/www/server/sauna.html'
 
 khhYraja = 23
 khhAraja = 22
-khhLattiaYraja = 32
-khhLattiaAraja = 29
+khhLattiaYraja = 36
+khhLattiaAraja = 31
 
 # Change float number from OWFS temperature file to integer
 def toint(file):
@@ -99,7 +99,7 @@ try:
         if (aikaNyt < '1800') and (aikaNyt > '2100') and (rele1 == '1'):
             saadaOff(1)
             syslog.syslog('Säädettiin rele 1 off ** Sauna lämpö ' + saunaLampoStr)
-	if (aikaNyt > '2100') and (aikaNyt < '0400) and (rele3 == '0'):
+	if (aikaNyt > '2100') and (aikaNyt < '2359') or ('0000' < aikaNyt < '0600') and (rele3 == '0'):
 	    saadaOn(3)
 	else:
 	    saadaOff(3)
