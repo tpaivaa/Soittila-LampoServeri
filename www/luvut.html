@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<link rel="stylesheet" type="text/css" href="styles/screen.css" />
+<link rel="stylesheet" href="styles/screen.css" type="text/css" media="Screen" />
+<link rel="stylesheet" href="styles/mobile.css" type="text/css" media="handheld" />
+<meta charset="UTF-8">
+<title>Lampö linkit</title>
+</head>
+<body>
+<a class="otsake" href="index.html">Home</a>
+<table border=0 >
+<tr>
+    <th id=paikka >Paikka</th>
+    <th id=lampo >Lämpötila</th>
+    <th class=fill ></th>
+    <th class=fill ></th>
+    <th class=fill ></th>
+    <th class=fill ></th>
+    <th class=fill >Laite</th>
+    <th class=fill >Tila</th>
+</tr>   
+<tr><td><a class=eka href="puukattila.html">Puukattila</a></td><td><a class=toka id="puukattila"></a></td>
+<td></td><td></td><td></td><td></td>
+<td><a class=eka href="kattilaSw.html">Attack kattilan tila</a></td><td><a class=toka id="kattilaSw"></a></td>
+</tr>
+<tr><td><a class=eka href="varaajaUp.html">Varaaja Ylä</a></td><td><a class=toka id="varaajaUp"></a></td>
+<td></td><td></td><td></td><td></td>
+<td><a class=eka href="laskuriB.html">1 ~ Mittari</a></td><td><a class=toka id="laskuriB"></a></td>
+</tr>
+<tr><td><a class=eka href="varaajaDown.html">Varaaja Ala</a></td><td><a class=toka id="varaajaDown"></a></td>
+<td></td><td></td><td></td><td></td>
+<td><a class=eka href="laskuriA.html">3 ~ Mittari</a></td><td><a class=toka id="laskuriA"></a></td>
+</tr>
+<tr><td><a class=eka href="kattilaCold.html">Kattila tulo</a></td><td><a class=toka id="kattilaCold"></a></td></tr>
+<tr><td><a class=eka href="kattilaHot.html">Kattila lähtö</a></td><td><a class=toka id="kattilaHot"></a></td></tr>
+<tr><td><a class=eka href="patteriL.html">Patteri lähtö</a></td><td><a class=toka id="patteriL"></a></td></tr>
+<tr><td><a class=eka href="LLlahto.html">Lattialämmitys lahto</a></td><td><a class=toka id="LLlahto"></a></td></tr>
+<tr><td></td><td></td></tr>
+
+<tr><td></td><td></td></tr>
+<tr><td><a class=eka href="maalampo.html">Maalämpö</a></td><td><a class=toka id="maalampo"></a></td></tr>
+<tr><td><a class=eka href="ulkoE.html">Ulkolämpö Etelä</a></td><td><a class=toka id="ulkoE"></a></td></tr>
+<tr><td><a class=eka href="ulkoP.html">Ulkolämpö Pohjoinen</a></td><td><a class=toka id="ulkoP"></a></td></tr>
+<tr><td><a class=eka href="akWcLattia.html">Alakerran Wc lattia</a></td><td><a class=toka id="akWcLattia"></a></td></tr>
+<tr><td></td><td></td></tr>
+<tr><td><a class=eka href="khh.html">Kodinhoitohuone</a></td><td><a class=toka id="khh"></a></td></tr>
+<tr><td><a class=eka href="olohuone.html">Olohuone</a></td><td><a class=toka id="olohuone"></a></td></tr>
+<tr><td><a class=eka href="makuuhuone.html">Makuuhuone</a></td><td><a class=toka id="makuuhuone"></a></td></tr>
+<tr><td><a class=eka href="sauna.html">Sauna</a></td><td><a class=toka id="sauna"></a></td></tr>
+</table>
+<script type="text/javascript">
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  var astetta = String.fromCharCode(186)+ 'C' ;
+xmlhttp.open("GET","puuKattila.html",false);
+xmlhttp.send();
+puukattila=xmlhttp.responseText;
+puukattila=parseInt(puukattila);
+document.getElementById("puukattila").innerHTML=puukattila + astetta;
+
+xmlhttp.open("GET","varaajaUp.html",false);
+xmlhttp.send();
+varaajaUp=xmlhttp.responseText;
+varaajaUp=parseInt(varaajaUp);
+document.getElementById("varaajaUp").innerHTML=varaajaUp + astetta;
+
+xmlhttp.open("GET","varaajaDown.html",false);
+xmlhttp.send();
+varaajaDown=xmlhttp.responseText;
+varaajaDown=parseInt(varaajaDown);
+document.getElementById("varaajaDown").innerHTML=varaajaDown + astetta;
+
+xmlhttp.open("GET","kattilaCold.html",false);
+xmlhttp.send();
+kattilaCold=xmlhttp.responseText;
+kattilaCold=parseInt(kattilaCold);
+document.getElementById("kattilaCold").innerHTML=kattilaCold + astetta;
+
+xmlhttp.open("GET","kattilaHot.html",false);
+xmlhttp.send();
+kattilaHot=xmlhttp.responseText;
+kattilaHot=parseInt(kattilaHot);
+document.getElementById("kattilaHot").innerHTML=kattilaHot + astetta;
+
+xmlhttp.open("GET","patteriL.html",false);
+xmlhttp.send();
+patteriL=xmlhttp.responseText;
+patteriL=parseInt(patteriL);
+document.getElementById("patteriL").innerHTML=patteriL + astetta;
+
+xmlhttp.open("GET","LLlahto.html",false);
+xmlhttp.send();
+LLlahto=xmlhttp.responseText;
+LLlahto=parseInt(LLlahto);
+document.getElementById("LLlahto").innerHTML=LLlahto + astetta;
+
+xmlhttp.open("GET","kattilaSw.html",false);
+xmlhttp.send();
+kattilaSw=xmlhttp.responseText;
+//kattilaSw=parseInt(kattilaSw);
+if (kattilaSw = 1) {
+    kattilaSw = "on";
+}
+else
+  {
+    kattilaSw = "off";
+  }  
+document.getElementById("kattilaSw").innerHTML=kattilaSw;
+
+xmlhttp.open("GET","laskuriB.html",false);
+xmlhttp.send();
+laskuriB=xmlhttp.responseText;
+laskuriB=parseInt(laskuriB);
+document.getElementById("laskuriB").innerHTML=laskuriB;
+
+xmlhttp.open("GET","laskuriA.html",false);
+xmlhttp.send();
+laskuriA=xmlhttp.responseText;
+laskuriA=parseInt(laskuriA);
+document.getElementById("laskuriA").innerHTML=laskuriA;
+
+xmlhttp.open("GET","maalampo.html",false);
+xmlhttp.send();
+maalampo=xmlhttp.responseText;
+maalampo=parseInt(maalampo);
+document.getElementById("maalampo").innerHTML=maalampo + astetta;
+
+xmlhttp.open("GET","ulkoE.html",false);
+xmlhttp.send();
+ulkoE=xmlhttp.responseText;
+ulkoE=parseInt(ulkoE);
+document.getElementById("ulkoE").innerHTML=ulkoE + astetta;
+
+xmlhttp.open("GET","ulkoP.html",false);
+xmlhttp.send();
+ulkoP=xmlhttp.responseText;
+ulkoP=parseInt(ulkoP);
+document.getElementById("ulkoP").innerHTML=ulkoP + astetta;
+
+xmlhttp.open("GET","akWcLattia.html",false);
+xmlhttp.send();
+akWcLattia=xmlhttp.responseText;
+akWcLattia=parseInt(akWcLattia);
+document.getElementById("akWcLattia").innerHTML=akWcLattia + astetta;
+
+xmlhttp.open("GET","khh.html",false);
+xmlhttp.send();
+khh=xmlhttp.responseText;
+khh=parseInt(khh)
+document.getElementById("khh").innerHTML=khh + astetta;
+
+xmlhttp.open("GET","olohuone.html",false);
+xmlhttp.send();
+olohuone=xmlhttp.responseText;
+olohuone=parseInt(olohuone);
+document.getElementById("olohuone").innerHTML=olohuone + astetta;
+
+xmlhttp.open("GET","makuuhuone.html",false);
+xmlhttp.send();
+makuuhuone=xmlhttp.responseText;
+makuuhuone=parseInt(makuuhuone);
+document.getElementById("makuuhuone").innerHTML=makuuhuone + astetta;
+
+xmlhttp.open("GET","sauna.html",false);
+xmlhttp.send();
+sauna=xmlhttp.responseText;
+sauna=parseInt(sauna);
+document.getElementById("sauna").innerHTML=sauna + astetta;
+</script>
+</body>
+</html>

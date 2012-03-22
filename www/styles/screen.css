@@ -1,0 +1,31 @@
+html, body {
+	font: 12px/15px sans-serif;
+	background: #d0e4fe;
+	padding: 3px;
+	color: #000;
+	margin: 0;
+	}
+a {margin-left:20px;}
+a.eka {
+	min-width: 120px;
+}
+a.toka {
+}
+a.otsake{
+	font: 18px/18px sans-serif bold;
+	
+}
+th#paikka {
+	text-align:justify;
+	padding-left:20px;
+	
+}
+object.oma {
+        font: 12px/15px sans-serif;
+        background: #d0e4fe;
+        padding: 3px;
+        color: #000;
+        margin: 0;
+	float:right;
+        }
+body {font: 12px/15px sans-serif;}
