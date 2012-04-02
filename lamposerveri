@@ -27,8 +27,9 @@ sauna = '/var/www/server/sauna.html'
 
 khhYraja = 23
 khhAraja = 22
-khhLattiaYraja = 36
-khhLattiaAraja = 31
+khhLattiaYraja = 32
+khhLattiaAraja = 28
+olohuoneHigh = 24
 
 # Change float number from OWFS temperature file to integer
 def toint(file):
@@ -82,10 +83,13 @@ try:
         akWcLattiaLampo = toint(akWcLattia)
         akWcLattiaLampoStr = getLampo(akWcLattia)
         saunaLampoStr = getLampo(sauna)
+	olohuoneStr = getLampo(olohuone)
         aikaNyt = time.strftime("%H%M", localtime())
         rele2 = releTila(2)
         rele1 = releTila(1)
 	rele3 = releTila(3)
+	rele7 = releTila(7)
+	rele8 = releTila(8)
         syslog.syslog('Lampötilojen Säätö Processing started')
         if (akWcLattiaLampo < khhLattiaAraja) and (rele2 == '0'):
             saadaOn(2)
@@ -103,6 +107,13 @@ try:
 	    saadaOn(3)
 	else:
 	    saadaOff(3)
+	if (olohuone > olohuoneHigh) and (rele7 == '1'):
+	    saadaoff(7)
+	    syslog.syslog('Säädettiin rele 7 off *** Olkkarissa: ' + olohuoneStr + ' astetta')  
+	else:
+	    saadaOn(7)
+	    syslog.syslog('Säädettiin rele 7 on *** Olkkarissa: ' + olohuoneStr + ' astetta')
+
         syslog.syslog('Lampötilojen Säätö Processing: Aloitetaan 600 ms Sleep')
         time.sleep(600)
     
