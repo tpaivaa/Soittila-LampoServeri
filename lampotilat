@@ -1,0 +1,59 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+import os
+import syslog
+
+vt = open('viimeTilat', 'w')
+
+def getTemp(anturi):
+    f = open(anturi)
+    s = f.readline()
+    d = round(float(s.strip()), 0)
+    i = int(d)
+    return i
+
+def read_config(filename):
+    t = open(filename)
+    config_dict = {}
+    for lines in t:
+        items = lines.split('= ', 1)
+        config_dict[items[0]] = eval(items[1])
+    return config_dict
+
+def avaa(file):
+    t = open(file)
+    list = []
+    for lines in t:
+        items = lines.split('= ',1)
+        list.append(items[1])
+    return list
+
+def avaa1(file):
+    t = open(file)
+    list = []
+    for lines in t:
+        items = lines.split('= ',1)
+        list.append(items[0])
+    return list
+
+
+
+'''g = avaa1('soittilaFiles.py')
+for plaa in g:
+    print  "".join(plaa)
+
+data = avaa('soittilaFiles.py')
+for h in data:
+    h = h.rstrip().strip('\'')
+    l = getTemp(h)
+    l = str(l)
+    vt.write(l + '\n')'''
+
+data1 = read_config('soittilaFiles.py')
+for n in data1:
+    l = getTemp(data1[n])
+    l = str(l)
+    vt.write( n + ':' + l + '\n' )
+
+syslog.syslog('Kirjoitettiin uudet lampötilat tiedostoon')
+vt.close()

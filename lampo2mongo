@@ -8,6 +8,8 @@ import pymongo
 from pymongo import Connection
 import soittilaFiles as f
 import datetime
+from datetime import datetime
+from time import strftime
 
 def getAika():
     now = datetime.datetime.now()
@@ -23,6 +25,7 @@ def getTemp(anturi):
 
 def getTimeStamp():
     t = datetime.datetime.now()
+    t = time.mktime(t.timetuple())
     return t
 
 def dateToStamp(date):
@@ -31,6 +34,10 @@ def dateToStamp(date):
     return stamppy
 # dateToStamp('19:02:00-23.01.2012')
 
+def timestampToDate(aikaleima):
+    date = datetime.fromtimestamp(aikaleima)
+    date = date.strftime('%Y.%m.%d-%H:%M:%S')
+    return date
 
 try:
     while(1):
