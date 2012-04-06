@@ -30,6 +30,7 @@ khhAraja = 22
 khhLattiaYraja = 32
 khhLattiaAraja = 28
 olohuoneHigh = 24
+saunaHigh = 21
 
 # Change float number from OWFS temperature file to integer
 def toint(file):
@@ -83,6 +84,7 @@ try:
         akWcLattiaLampo = toint(akWcLattia)
         akWcLattiaLampoStr = getLampo(akWcLattia)
         saunaLampoStr = getLampo(sauna)
+        saunaLampo = toint(sauna)
 	olohuoneStr = getLampo(olohuone)
         aikaNyt = time.strftime("%H%M", localtime())
         rele2 = releTila(2)
@@ -97,10 +99,10 @@ try:
         if (akWcLattiaLampo > khhLattiaYraja) and (rele2 == '1'):
             saadaOff(2)
             syslog.syslog('Säädettiin rele 2 off ** Lattia ' + akWcLattiaLampoStr)
-        if ('2100' < aikaNyt > '1800') and (rele1 == '0'):
+        if (('2100' < aikaNyt > '1800') or (saunaLampo < 20)) and (rele1 == '0'):
             saadaOn(1)
             syslog.syslog('Säädettiin rele 1 on ** Sauna lämpö ' + saunaLampoStr)
-        if (aikaNyt < '1800') and (aikaNyt > '2100') and (rele1 == '1'):
+        if ((aikaNyt < '1800') and (aikaNyt > '2100') or (saunaLampo > saunaHigh)) and (rele1 == '1'):
             saadaOff(1)
             syslog.syslog('Säädettiin rele 1 off ** Sauna lämpö ' + saunaLampoStr)
 	if (aikaNyt > '2100') and (aikaNyt < '2359') or ('0000' < aikaNyt < '0600') and (rele3 == '0'):
