@@ -3,239 +3,75 @@
 <link rel="stylesheet" type="text/css" href="styles/screen.css" />
 <link rel="stylesheet" href="styles/screen.css" type="text/css" media="Screen" />
 <link rel="stylesheet" href="styles/mobile.css" type="text/css" media="handheld" />
-<!--[if IE]>
-<script type="text/javascript" src="scripts/excanvas.js"></script>
-<![endif]-->
-<script type="text/javascript" src="scripts/gauge.js"></script>
+<script type="text/javascript" src="scripts/jquery.js"></script>
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+
 <meta charset="UTF-8">
-<title>Lampö linkit</title>
+<title>Lämpö linkit</title>
 </head>
 <body>
-    <a class="otsake" href="luvut.html">Kaikki</a>
-<div id="mittarit">
-    <canvas id="khh_gauge" width="175" height="175" alt="khh"></canvas>
-    <canvas id="akWcLattia_gauge" width="175" height="175" alt="khh Lattia"></canvas>
-    <canvas id="olohuone_gauge" width="175" height="175" alt="olohuone"></canvas>
-    <canvas id="makuuhuone_gauge" width="175" height="175" alt="makuuhuone"></canvas>
-</div>
-
-
-
+    <a class="otsake" href="ajax.html">Kaikki</a>
+    <div id='chart_div'></div>
+    <div id='chart_div_1'></div>
 <script type="text/javascript">
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  } 
-xmlhttp.open("GET","puuKattila.html",false);
-xmlhttp.send();
-puukattila=xmlhttp.responseText;
-puukattila=parseInt(puukattila);
+var khh = olohuone = makuuhuone = akWcLattia = puukattila = 0;
 
+$.getJSON('https://paawo.dy.fi:18443/viimetilat.html', function(tilat) {
+    khh = tilat.khh;
+    akWcLattia = tilat.akWcLattia;
+    olohuone = tilat.olohuone;
+    puukattila = tilat.puukattila;
+    makuuhuone = tilat.makuuhuone;
+});    
+      google.load('visualization', '1', {packages:['gauge']});
+      //google.setOnLoadCallback(drawChart);
+      
+function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Label');
+        data.addColumn('number', 'Value');        
+        data.addRows([
+          ['khh', khh],
+          ['khh Lattia', akWcLattia],
+          ['Olohuone', olohuone],
+          ['Makuuhuone', makuuhuone]
+        ]);
+        var options = {
+          min: 0, max: 40,  
+          width: 640, height: 120,
+          redFrom: 35, redTo: 40,
+          yellowFrom: 23, yellowTo: 35,
+          minorTicks: 5
+        };
 
-xmlhttp.open("GET","varaajaUp.html",false);
-xmlhttp.send();
-varaajaUp=xmlhttp.responseText;
-varaajaUp=parseInt(varaajaUp);
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+function drawChartHot() {
+        var data1 = new google.visualization.DataTable();
+        data1.addColumn('string', 'Label');
+        data1.addColumn('number', 'Value');        
+        data1.addRows([
+          ['Puukattila', puukattila]
+        ]);
+        var options1 = {
+          min: 0, max: 100,  
+          width: 400, height: 120,
+          redFrom: 60, redTo: 100,
+          yellowFrom: 40, yellowTo: 60,
+          minorTicks: 5
+        };
 
-
-xmlhttp.open("GET","varaajaDown.html",false);
-xmlhttp.send();
-varaajaDown=xmlhttp.responseText;
-varaajaDown=parseInt(varaajaDown);
-
-
-xmlhttp.open("GET","kattilaCold.html",false);
-xmlhttp.send();
-kattilaCold=xmlhttp.responseText;
-kattilaCold=parseInt(kattilaCold);
-
-
-xmlhttp.open("GET","kattilaHot.html",false);
-xmlhttp.send();
-kattilaHot=xmlhttp.responseText;
-kattilaHot=parseInt(kattilaHot);
-
-
-xmlhttp.open("GET","patteriL.html",false);
-xmlhttp.send();
-patteriL=xmlhttp.responseText;
-patteriL=parseInt(patteriL);
-
-
-xmlhttp.open("GET","LLlahto.html",false);
-xmlhttp.send();
-LLlahto=xmlhttp.responseText;
-LLlahto=parseInt(LLlahto);
-
-
-xmlhttp.open("GET","kattilaSw.html",false);
-xmlhttp.send();
-kattilaSw=xmlhttp.responseText;
-kattilaSw=parseInt(kattilaSw);
-
-
-xmlhttp.open("GET","laskuriB.html",false);
-xmlhttp.send();
-laskuriB=xmlhttp.responseText;
-laskuriB=parseInt(laskuriB);
-
-
-xmlhttp.open("GET","laskuriA.html",false);
-xmlhttp.send();
-laskuriA=xmlhttp.responseText;
-laskuriA=parseInt(laskuriA);
-
-
-xmlhttp.open("GET","maalampo.html",false);
-xmlhttp.send();
-maalampo=xmlhttp.responseText;
-maalampo=parseInt(maalampo);
-
-
-xmlhttp.open("GET","ulkoE.html",false);
-xmlhttp.send();
-ulkoE=xmlhttp.responseText;
-ulkoE=parseInt(ulkoE);
-
-
-xmlhttp.open("GET","ulkoP.html",false);
-xmlhttp.send();
-ulkoP=xmlhttp.responseText;
-ulkoP=parseInt(ulkoP);
-
-
-xmlhttp.open("GET","akWcLattia.html",false);
-xmlhttp.send();
-akWcLattia=xmlhttp.responseText;
-akWcLattia=parseInt(akWcLattia);
-
-
-xmlhttp.open("GET","khh.html",false);
-xmlhttp.send();
-khh=xmlhttp.responseText;
-khh=parseInt(khh)
-
-
-xmlhttp.open("GET","olohuone.html",false);
-xmlhttp.send();
-olohuone=xmlhttp.responseText;
-olohuone=parseInt(olohuone);
-
-
-xmlhttp.open("GET","makuuhuone.html",false);
-xmlhttp.send();
-makuuhuone=xmlhttp.responseText;
-makuuhuone=parseInt(makuuhuone);
-
-
-xmlhttp.open("GET","sauna.html",false);
-xmlhttp.send();
-sauna=xmlhttp.responseText;
-sauna=parseInt(sauna);
-
-
-// Helper to execute a function after the window is loaded,
-			// see http://www.google.com/search?q=addLoadEvent
-			function addLoadEvent(func) {
-				var oldonload = window.onload;
-				if (typeof window.onload != 'function') {
-					window.onload = func;
-				} else {
-					window.onload = function() {
-						if (oldonload) {
-							oldonload();
-						}
-						func();
-					}
-				}
-			}
-
-			addLoadEvent( function() {
-				var options;
-
-				// Draw the khh_gauge using owfs value fetch from file
-				options = {
-					value: 0,
-					label: 'khh',
-					unitsLabel: '' + String.fromCharCode(186),
-					min: 0,
-					max: 40,
-					majorTicks: 5,
-					minorTicks: 9, // small ticks inside each major tick
-					greenFrom: 0,
-					greenTo: 15,
-					yellowFrom: 15,
-					yellowTo: 25,
-					redFrom: 25,
-					redTo: 40
-				};
-				khh_gauge = new Gauge( document.getElementById( 'khh_gauge'), options );
-                                khh_gauge.setValue( khh );
-                    
-				// Draw the akWcLattia gauge using owfs value fetch from file
-                                var akWcLattia_options = {
-					value: 0,
-					label: 'khh Lattia',
-					unitsLabel: '' + String.fromCharCode(186),
-					min: 0,
-					max: 40,
-					majorTicks: 5,
-					minorTicks: 9, // small ticks inside each major tick
-					greenFrom: 0,
-					greenTo: 15,
-					yellowFrom: 15,
-					yellowTo: 25,
-					redFrom: 25,
-					redTo: 40
-				};
-				akWcLattia_gauge = new Gauge( document.getElementById( 'akWcLattia_gauge'), akWcLattia_options );
-                		akWcLattia_gauge.setValue( akWcLattia );
-                                
-                                akWcLattia_gauge.draw();
-
-				// Draw the olohuone_gauge using custom owfs value fetch from file
-                                var olohuone_options = {
-					value: 0,
-					label: 'olohuone',
-					unitsLabel: '' + String.fromCharCode(186),
-					min: 0,
-					max: 40,
-					majorTicks: 5,
-					minorTicks: 9, // small ticks inside each major tick
-					greenFrom: 0,
-					greenTo: 15,
-					yellowFrom: 15,
-					yellowTo: 25,
-					redFrom: 25,
-					redTo: 40
-				};
-				olohuone_gauge = new Gauge( document.getElementById( 'olohuone_gauge'), olohuone_options );
-				olohuone_gauge.setValue( olohuone );
-                                
-				// Draw the makuuuhuone_gauge using custom owfs value fetch from file
-                                var makuuhuone_options = {
-					value: 0,
-					label: 'makuuhuone',
-					unitsLabel: '' + String.fromCharCode(186),
-					min: 0,
-					max: 40,
-					majorTicks: 5,
-					minorTicks: 9, // small ticks inside each major tick
-					greenFrom: 0,
-					greenTo: 15,
-					yellowFrom: 15,
-					yellowTo: 25,
-					redFrom: 25,
-					redTo: 40
-				};
-				makuuhuone_gauge = new Gauge( document.getElementById( 'makuuhuone_gauge' ), makuuhuone_options );
-				makuuhuone_gauge.setValue(makuuhuone);
-                                
-			} );
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div_1'));
+        chart.draw(data1, options1);
+      }
+      
+$(function(){
+    drawChart();
+    drawChartHot();
+    setInterval( "drawChart()", 10000 );
+    setInterval( "drawChartHot()", 15000 );
+});    
 </script>
 </body>
 </html>

@@ -59,7 +59,20 @@ var astetta = String.fromCharCode(186)+ 'C' ;
 function updateLammot() {
         $.getJSON('https://paawo.dy.fi:18443/viimetilat.html', function(data) {
           $.each(data, function(key, val) {
-            $('#'+key).text(val + astetta);
+            if (key=='laskuriB' || key=='laskuriA'){
+              $('#'+key).text(val);  
+            }
+            else if (key=='kattilaSw'){
+                if (data.kattilaSw==1){
+                    $('#'+key).text('On');
+                }
+                else{
+                    $('#'+key).text('Off');
+                }
+            }    
+            else {
+                $('#'+key).text(val + astetta);
+            }
           });
         });
       
