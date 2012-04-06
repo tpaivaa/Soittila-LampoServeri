@@ -9,7 +9,7 @@ from time import strftime,localtime
 puukattila = '/var/www/server/puuKattila.html'
 varaajaUp = '/var/www/server/varaajaUp.html'
 varaajaDown = '/var/www/server/varaajaDown.html'
-kattilaGold = '/var/www/server/kattilaCold.html'
+kattilaCold = '/var/www/server/kattilaCold.html'
 kattilaHot = '/var/www/server/kattilaHot.html'
 patteriL = '/var/www/server/patteriL.html'
 LLlahto = '/var/www/server/LLlahto.html'
@@ -48,41 +48,62 @@ def getLampo(file):
     return l
 
 def releTila(relay):
-    relaya = str(relay)
-    connection = httplib.HTTPConnection('10.10.10.54', timeout=1)
-    connection.request('GET', '/rele/'+ relaya)
-    tila = connection.getresponse()
-    tila = tila.read()
-    connection.close()
-    relaya = int(relaya)
-    tila = int(tila)
-    if relaya < 5 and tila < 2:
-        tila = 0
-    if tila == 1023:
-        tila = 1    
-    return str(tila)
+    loop = 10
+    c = 0
+    while c < loop:
+        try:
+            relaya = str(relay)
+            connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
+            connection.request('GET', '/rele/'+ relaya)
+            tila = connection.getresponse()
+            tila = tila.read()
+            connection.close()
+            relaya = int(relaya)
+            tila = int(tila)
+            if relaya < 5 and tila < 2:
+                tila = 0
+            if tila == 1023:
+                tila = 1    
+            return str(tila)
+        except:
+            c += 1
+    return 'ReleTila ei onnistu'
     
 def saadaOn(rele):
-    relaya = str(rele)
-    connection = httplib.HTTPConnection('10.10.10.54')
-    connection.request('GET', '/on/'+ relaya)
-    response = connection.getresponse()
-    resp = response.read()
-    connection.close()    
+    loop = 10
+    c = 0
+    while c < loop:
+        try:    
+            relaya = str(rele)
+            connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
+            connection.request('GET', '/on/'+ relaya)
+            response = connection.getresponse()
+            resp = response.read()
+            connection.close()    
+        except:
+            c += 1
+    return 'ReleSäätö On ei onnistu'
 
 def saadaOff(rele):
-    relaya = str(rele)
-    connection = httplib.HTTPConnection('10.10.10.54')
-    connection.request('GET', '/off/'+ relaya)
-    response = connection.getresponse()
-    resp = response.read()
-    connection.close()
+    loop = 10
+    c = 0
+    while c < loop:
+        try:
+            relaya = str(rele)
+            connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
+            connection.request('GET', '/off/'+ relaya)
+            response = connection.getresponse()
+            resp = response.read()
+            connection.close()
+        except:
+            c += 1
+    return 'ReleSäätö Off  ei onnistu'
 
 try:
     while(1):
-        khhLampo = toint(khh)
-        akWcLattiaLampo = toint(akWcLattia)
-        akWcLattiaLampoStr = getLampo(akWcLattia)
+	khhLampo = toint(khh)
+        akWcLattiaLampo = getLampo(akWcLattia)
+        akWcLattiaLampoStr = toint(akWcLattia)
         saunaLampoStr = getLampo(sauna)
         saunaLampo = toint(sauna)
 	olohuoneStr = getLampo(olohuone)
@@ -109,17 +130,18 @@ try:
 	    saadaOn(3)
 	else:
 	    saadaOff(3)
-	if (olohuone > olohuoneHigh) and (rele8 == '1'):
+	'''if (olohuone > olohuoneHigh) and (rele8 == '1'):
 	    saadaOff(8)
 	    syslog.syslog('Säädettiin rele 8 off *** Olkkarissa: ' + olohuoneStr + ' astetta')  
 	else:
 	    saadaOn(8)
 	    syslog.syslog('Säädettiin rele 8 on *** Olkkarissa: ' + olohuoneStr + ' astetta')
         if (rele7 == '0'):
-            saadaOn(7)
+            saadaOn(7)'''
         syslog.syslog('Lampötilojen Säätö Processing: Aloitetaan 600 ms Sleep')
         time.sleep(600)
     
 except Exception, e:
         syslog.syslog(syslog.LOG_ERR, 'Lamposerveri, ei saada yhteyttä lämpötiloihin: ')
+	print(e)
 	pass
