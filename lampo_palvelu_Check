@@ -2,7 +2,7 @@
 SERVICE='lampo2mongo'
 SERVICEA='lamposerveri'
 SERVICEB='owfs'
- 
+
 if ps ax | grep -v grep | grep $SERVICE > /dev/null
 then
     logger -t checker "#********************************************"
@@ -30,6 +30,13 @@ then
     logger -t checker "$SERVICEB service running, everything is fine"
     logger -t checker "********************************************#"
 else
+    sendEmail -f owfs@sauna.dy.fi  -t tomi.lindstrom@aina.fi  -s smtp.kolumbus.fi  -u "OWFS"  -m "1-Wire Service is down, tried to reboot. Pleace check!" -q
+    sudo /etc/init.d/owfs.sh stop > /dev/null
+    sudo /etc/init.d/owfs.sh start > /dev/null
+    logger -t checker "Email sent and $SERVICEB service Restarted, should be fine now"
+fi
+if  ! ls /mnt/1wire/uncached/10.70F938010800/temperature -f > /dev/null
+then
     sendEmail -f owfs@sauna.dy.fi  -t tomi.lindstrom@aina.fi  -s smtp.kolumbus.fi  -u "OWFS"  -m "1-Wire Service is down, tried to reboot. Pleace check!" -q
     sudo /etc/init.d/owfs.sh stop > /dev/null
     sudo /etc/init.d/owfs.sh start > /dev/null
