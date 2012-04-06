@@ -29,7 +29,7 @@ khhYraja = 23
 khhAraja = 22
 khhLattiaYraja = 32
 khhLattiaAraja = 28
-olohuoneHigh = 24
+olohuoneHigh = 22
 saunaHigh = 21
 
 # Change float number from OWFS temperature file to integer
@@ -130,14 +130,14 @@ try:
 	    saadaOn(3)
 	else:
 	    saadaOff(3)
-	'''if (olohuone > olohuoneHigh) and (rele8 == '1'):
+	if (olohuone > olohuoneHigh) and (rele8 == '1'):
 	    saadaOff(8)
 	    syslog.syslog('Säädettiin rele 8 off *** Olkkarissa: ' + olohuoneStr + ' astetta')  
 	else:
 	    saadaOn(8)
 	    syslog.syslog('Säädettiin rele 8 on *** Olkkarissa: ' + olohuoneStr + ' astetta')
         if (rele7 == '0'):
-            saadaOn(7)'''
+            saadaOn(7)
         syslog.syslog('Lampötilojen Säätö Processing: Aloitetaan 600 ms Sleep')
         time.sleep(600)
     
