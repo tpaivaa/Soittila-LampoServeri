@@ -12,7 +12,7 @@ from datetime import datetime
 from time import strftime
 
 def getAika():
-    now = datetime.datetime.now()
+    now = datetime.now()
     aika = now.strftime("%Y.%m.%d-%H:%M:%S")
     return aika
 
@@ -24,7 +24,7 @@ def getTemp(anturi):
     return i    
 
 def getTimeStamp():
-    t = datetime.datetime.now()
+    t = datetime.now()
     t = time.mktime(t.timetuple())
     return t
 
@@ -47,7 +47,7 @@ try:
         uudet_lampotilat = [{"anturi": "puukattila","lampotila": getTemp(f.puukattila),"date": getAika(), "stamp": getTimeStamp()},
             {"anturi": "varaajaUp","lampotila": getTemp(f.varaajaUp),"date": getAika(),"stamp": getTimeStamp()},
             {"anturi": "varaajaDown","lampotila": getTemp(f.varaajaDown),"date": getAika(),"stamp": getTimeStamp()},
-            {"anturi": "kattilaGold","lampotila": getTemp(f.kattilaGold),"date": getAika(),"stamp": getTimeStamp()},
+            {"anturi": "kattilaCold","lampotila": getTemp(f.kattilaCold),"date": getAika(),"stamp": getTimeStamp()},
             {"anturi": "kattilaHot","lampotila": getTemp(f.kattilaHot),"date": getAika(),"stamp": getTimeStamp()},
             {"anturi": "patteriL","lampotila": getTemp(f.patteriL),"date": getAika(),"stamp": getTimeStamp()},
             {"anturi": "LLlahto","lampotila": getTemp(f.LLlahto),"date": getAika(),"stamp": getTimeStamp()},
@@ -67,5 +67,6 @@ try:
         syslog.syslog('Lämpötilat päivitetty')
         time.sleep(600)
 
-except IOError:
-    syslog.syslog(syslog.LOG_ERR, 'Ollaan IO Errorissa')
+except Exception, e:
+    print(e)
+    syslog.syslog(syslog.LOG_ERR,'Lampo2Mongo ollaan errorissa')
