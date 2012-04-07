@@ -60,7 +60,7 @@ def releTila(relay):
             connection.close()
             relaya = int(relaya)
             tila = int(tila)
-            if relaya < 5 and tila < 2:
+            if relaya < 5 and tila < 20:
                 tila = 0
             if tila == 1023:
                 tila = 1    
