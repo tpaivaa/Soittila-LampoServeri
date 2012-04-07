@@ -139,7 +139,7 @@ try:
             syslog.syslog('Säädettiin rele 3 On ** ')
 	else:
 	    saadaOff(3)
-            syslog.syslog('Säädettiin rele 3 off **)
+            syslog.syslog('Säädettiin rele 3 off **')
 	if (olohuone > olohuoneHigh) and (rele8 == '1'):
 	    saadaOff(8)
 	    syslog.syslog('Säädettiin rele 8 off *** Olkkarissa: ' + olohuoneStr + ' astetta')  
