@@ -111,7 +111,7 @@ try:
         aikaNyt = time.strftime("%H%M", localtime())
         rele2 = releTila(2)
         rele1 = releTila(1)
-        rele3 = releTila(3)
+#        rele3 = releTila(3)
         rele7 = releTila(7)
         rele8 = releTila(8)
         syslog.syslog('Lampötilojen Säätö Processing started')
@@ -134,7 +134,7 @@ try:
             saadaOff(1)
             syslog.syslog('Säädettiin rele 1 off ** Sauna lämpö ' + saunaLampoStr)
         else:
-            syslog.syslog('rele 1 OK  ** Saunassa ' + saunaLampoStr + 'Rele3 = ' + rele3)
+            syslog.syslog('rele 1 OK  ** Saunassa ' + saunaLampoStr)
         '''if ('2100' < aikaNyt < '2359') or ('0000' < aikaNyt < '0600') and (rele3 == '0'):
             saadaOn(3)
             syslog.syslog('Säädettiin rele 3 On ** ')
