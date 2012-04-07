@@ -112,7 +112,7 @@ try:
         rele2 = releTila(2)
         rele1 = releTila(1)
 #	rele3 = releTila(3)
-#	rele7 = releTila(7)
+	rele7 = releTila(7)
 #	rele8 = releTila(8)
         syslog.syslog('Lampötilojen Säätö Processing started')
         if (akWcLattiaLampo < khhLattiaAraja) and (rele2 == '0'):
