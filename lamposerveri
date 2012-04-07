@@ -136,7 +136,7 @@ try:
             syslog.syslog('rele 2 OK  ** Saunassa ' + saunaLampoStr)            
 	if (aikaNyt > '2100') and (aikaNyt < '2359') or ('0000' < aikaNyt < '0600') and (rele3 == '0'):
 	    saadaOn(3)
-            syslog.syslog('Säädettiin rele 3 On ** )
+            syslog.syslog('Säädettiin rele 3 On ** ')
 	else:
 	    saadaOff(3)
             syslog.syslog('Säädettiin rele 3 off **)
@@ -148,7 +148,7 @@ try:
 	    syslog.syslog('Säädettiin rele 8 on *** Olkkarissa: ' + olohuoneStr + ' astetta')
         if (rele7 == '0'):
             saadaOn(7)
-            syslog.syslog('Säädettiin rele 7 On **)
+            syslog.syslog('Säädettiin rele 7 On **')
         syslog.syslog('Lampötilojen Säätö Processing: Aloitetaan 600 ms Sleep')
         time.sleep(600)
     
