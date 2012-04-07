@@ -102,8 +102,8 @@ def saadaOff(rele):
 try:
     while(1):
 	khhLampo = toint(khh)
-        akWcLattiaLampo = getLampo(akWcLattia)
-        akWcLattiaLampoStr = toint(akWcLattia)
+        akWcLattiaLampo = toint(akWcLattia)
+        akWcLattiaLampoStr = getLampo(akWcLattia)
         saunaLampoStr = getLampo(sauna)
         saunaLampo = toint(sauna)
 	olohuoneStr = getLampo(olohuone)
@@ -134,7 +134,7 @@ try:
             syslog.syslog('Säädettiin rele 1 off ** Sauna lämpö ' + saunaLampoStr)
         else:
             syslog.syslog('rele 2 OK  ** Saunassa ' + saunaLampoStr)            
-	if (aikaNyt > '2100') and (aikaNyt < '2359') or ('0000' < aikaNyt < '0600') and (rele3 == '0'):
+	if (((aikaNyt > '2100') and (aikaNyt < '2359')) or ('0000' < aikaNyt < '0600')) and (rele3 == '0'):
 	    saadaOn(3)
             syslog.syslog('Säädettiin rele 3 On ** ')
 	else:
