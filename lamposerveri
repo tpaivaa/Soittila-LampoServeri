@@ -79,6 +79,8 @@ def saadaOn(rele):
     while c < loop:
         try:    
             relaya = str(rele)
+            if relaya == '10':
+                relaya = 'A'
             connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
             connection.request('GET', '/on/'+ relaya)
             response = connection.getresponse()
@@ -94,6 +96,8 @@ def saadaOff(rele):
     while c < loop:
         try:
             relaya = str(rele)
+            if relaya == '10':
+                relaya = 'A'
             connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
             connection.request('GET', '/off/'+ relaya)
             response = connection.getresponse()
@@ -114,7 +118,7 @@ try:
         olohuoneLampo = toint(olohuone)
         aikaNyt = time.strftime("%H%M", localtime())
         rele2 = releTila(2)
-        rele10 = releTila(A)
+        rele10 = releTila(10)
         rele3 = releTila(3)
         rele7 = releTila(7)
         rele8 = releTila(8)
@@ -130,13 +134,13 @@ try:
         else:
             syslog.syslog('rele 2 OK  ** Lattia ' + akWcLattiaLampoStr)            
         if (('2100' < aikaNyt) and (aikaNyt > '1800') or (saunaLampo < 20)) and (rele10 == '0'):
-            saadaOn(A)
+            saadaOn(10)
             syslog.syslog('Säädettiin rele 1 on ** Sauna lämpö ' + saunaLampoStr)
         else:
-	    saadaOff(A)
+	    saadaOff(10)
             syslog.syslog('rele 10 Säädetty Off  ** Saunassa ' + saunaLampoStr)            
         if ((aikaNyt < '1800') and (aikaNyt > '2100') or (saunaLampo > saunaHigh)) and (rele10 == '1'):
-            saadaOff(A)
+            saadaOff(10)
             syslog.syslog('Säädettiin rele 1 off ** Sauna lämpö ' + saunaLampoStr)
         else:
             syslog.syslog('rele 1 OK  ** Saunassa ' + saunaLampoStr)
