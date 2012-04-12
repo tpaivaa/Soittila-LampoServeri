@@ -53,7 +53,7 @@ def releTila(relay):
     while c < loop:
         try:
             relaya = str(relay)
-                if relaya == '10':
+            if relaya == '10':
                 relaya = 'A'
             connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
             connection.request('GET', '/rele/'+ relaya)
