@@ -110,8 +110,8 @@ try:
         olohuoneLampo = toint(olohuone)
         aikaNyt = time.strftime("%H%M", localtime())
         rele2 = releTila(2)
-        rele1 = releTila(1)
-#        rele3 = releTila(3)
+        rele10 = releTila(A)
+        rele3 = releTila(3)
         rele7 = releTila(7)
         rele8 = releTila(8)
         syslog.syslog('Lampötilojen Säätö Processing started')
@@ -125,22 +125,23 @@ try:
             syslog.syslog('Säädettiin rele 2 off ** Lattia ' + akWcLattiaLampoStr)
         else:
             syslog.syslog('rele 2 OK  ** Lattia ' + akWcLattiaLampoStr)            
-        if (('2100' < aikaNyt > '1800') or (saunaLampo < 20)) and (rele1 == '0'):
-            saadaOn(1)
+        if (('2100' < aikaNyt) and (aikaNyt > '1800') or (saunaLampo < 20)) and (rele10 == '0'):
+            saadaOn(A)
             syslog.syslog('Säädettiin rele 1 on ** Sauna lämpö ' + saunaLampoStr)
         else:
-            syslog.syslog('rele 1 OK  ** Saunassa ' + saunaLampoStr)            
-        if ((aikaNyt < '1800') and (aikaNyt > '2100') or (saunaLampo > saunaHigh)) and (rele1 == '1'):
-            saadaOff(1)
+	    saadaOff(A)
+            syslog.syslog('rele 10 Säädetty Off  ** Saunassa ' + saunaLampoStr)            
+        if ((aikaNyt < '1800') and (aikaNyt > '2100') or (saunaLampo > saunaHigh)) and (rele10 == '1'):
+            saadaOff(A)
             syslog.syslog('Säädettiin rele 1 off ** Sauna lämpö ' + saunaLampoStr)
         else:
             syslog.syslog('rele 1 OK  ** Saunassa ' + saunaLampoStr)
-        '''if ('2100' < aikaNyt < '2359') or ('0000' < aikaNyt < '0600') and (rele3 == '0'):
+        if ('2100' < aikaNyt) and (aikaNyt < '2359') or ('0000' < aikaNyt < '0600') and (rele3 == '0'):
             saadaOn(3)
             syslog.syslog('Säädettiin rele 3 On ** ')
         else:
             saadaOff(3)
-            syslog.syslog('Säädettiin rele 3 off **')'''
+            syslog.syslog('Säädettiin rele 3 off **')
         if (olohuoneLampo > olohuoneHigh) and (rele8 == '1'):
             saadaOff(8)
             syslog.syslog('Säädettiin rele 8 off *** Olkkarissa: ' + olohuoneStr + ' astetta')  
