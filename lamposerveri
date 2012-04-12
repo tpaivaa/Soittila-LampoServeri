@@ -53,11 +53,15 @@ def releTila(relay):
     while c < loop:
         try:
             relaya = str(relay)
+                if relaya == '10':
+                relaya = 'A'
             connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
             connection.request('GET', '/rele/'+ relaya)
             tila = connection.getresponse()
             tila = tila.read()
             connection.close()
+            if relaya == 'A':
+                hex2dec(relaya)
             relaya = int(relaya)
             tila = int(tila)
             if relaya < 5 and tila < 9:
