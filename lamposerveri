@@ -144,7 +144,7 @@ try:
             syslog.syslog('Säädettiin rele 1 off ** Sauna lämpö ' + saunaLampoStr)
         else:
             syslog.syslog('rele 1 OK  ** Saunassa ' + saunaLampoStr)
-        if ('2100' < aikaNyt) and (aikaNyt < '2359') or ('0000' < aikaNyt < '0600') and (rele3 == '0'):
+        if (('2100' < aikaNyt) and (aikaNyt < '2359') or ('0000' < aikaNyt < '0600')) and (rele3 == '0'):
             saadaOn(3)
             syslog.syslog('Säädettiin rele 3 On ** ')
         else:
