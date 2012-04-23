@@ -53,7 +53,7 @@ def releTila(relay):
     while c < loop:
         try:
             relaya = str(relay)
-            if relaya == '10':
+            if relaya == 10:
                 relaya = 'A'
             connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
             connection.request('GET', '/rele/'+ relaya)
@@ -61,7 +61,7 @@ def releTila(relay):
             tila = tila.read()
             connection.close()
             if relaya == 'A':
-                hex2dec(relaya)
+                relaya = hex2dec(relaya)
             relaya = int(relaya)
             tila = int(tila)
             if relaya < 5 and tila < 9:
@@ -79,7 +79,7 @@ def saadaOn(rele):
     while c < loop:
         try:    
             relaya = str(rele)
-            if relaya == '10':
+            if relaya == 10:
                 relaya = 'A'
             connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
             connection.request('GET', '/on/'+ relaya)
@@ -96,7 +96,7 @@ def saadaOff(rele):
     while c < loop:
         try:
             relaya = str(rele)
-            if relaya == '10':
+            if relaya == 10:
                 relaya = 'A'
             connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
             connection.request('GET', '/off/'+ relaya)
@@ -106,6 +106,9 @@ def saadaOff(rele):
         except:
             c += 1
     return 'ReleSäätö Off  ei onnistu'
+
+def hex2dec(s):
+    return int(s, 16)
 
 try:
     while(1):
@@ -122,7 +125,7 @@ try:
         rele3 = releTila(3)
         rele7 = releTila(7)
         rele8 = releTila(8)
-        syslog.syslog('Lampötilojen Säätö Processing started')
+        syslog.syslog('>Lamposerveri Säätö Processing Loop started************************>')
         if (akWcLattiaLampo < khhLattiaAraja) and (rele2 == '0'):
             saadaOn(2)
             syslog.syslog('Säädettiin rele 2 on ** Lattia ' + akWcLattiaLampoStr)
@@ -132,39 +135,50 @@ try:
             saadaOff(2)
             syslog.syslog('Säädettiin rele 2 off ** Lattia ' + akWcLattiaLampoStr)
         else:
-            syslog.syslog('rele 2 OK  ** Lattia ' + akWcLattiaLampoStr)            
+            syslog.syslog('rele 2 OK  ** Lattia ' + akWcLattiaLampoStr)
+        syslog.syslog('Alotetaan 10 loop Rele10: '+ rele10)                
+        time.sleep(10)
+        syslog.syslog('Lopetetaan 10 loop')
         if (('2100' < aikaNyt) and (aikaNyt > '1800') or (saunaLampo < 20)) and (rele10 == '0'):
             saadaOn(10)
+            print 'Rele 10 on'
             syslog.syslog('Säädettiin rele 1 on ** Sauna lämpö ' + saunaLampoStr)
         else:
 	    saadaOff(10)
+            print 'rele 10 off'
             syslog.syslog('rele 10 Säädetty Off  ** Saunassa ' + saunaLampoStr)            
-        if ((aikaNyt < '1800') and (aikaNyt > '2100') or (saunaLampo > saunaHigh)) and (rele10 == '1'):
+        '''if ((aikaNyt < '1800') and (aikaNyt > '2100') or (saunaLampo > saunaHigh)) and (rele10 == '1'):
             saadaOff(10)
             syslog.syslog('Säädettiin rele 1 off ** Sauna lämpö ' + saunaLampoStr)
         else:
-            syslog.syslog('rele 1 OK  ** Saunassa ' + saunaLampoStr)
+            syslog.syslog('rele 1 OK  ** Saunassa ' + saunaLampoStr)'''
         if (('2100' < aikaNyt) and (aikaNyt < '2359') or ('0000' < aikaNyt < '0600')) and (rele3 == '0'):
+            print 'Rele 3 on'
             saadaOn(3)
             syslog.syslog('Säädettiin rele 3 On ** ')
         else:
+            print 'Rele 3 off'
             saadaOff(3)
             syslog.syslog('Säädettiin rele 3 off **')
         if (olohuoneLampo > olohuoneHigh) and (rele8 == '1'):
             saadaOff(8)
             syslog.syslog('Säädettiin rele 8 off *** Olkkarissa: ' + olohuoneStr + ' astetta')  
         else:
-            saadaOn(8)
-            syslog.syslog('Säädettiin rele 8 on *** Olkkarissa: ' + olohuoneStr + ' astetta')
+            try:
+                saadaOn(8)
+                syslog.syslog('Säädettiin rele 8 on *** Olkkarissa: ' + olohuoneStr + ' astetta')
+            except Exception, e:
+                print e
+                pass
         if (rele7 == '0'):
             saadaOn(7)
             syslog.syslog('Säädettiin rele 7 On **')
         else:
-            syslog.syslog('Rele 7 On')
+            syslog.syslog('Rele 7 Taitaa olla jo On')
         syslog.syslog('Lampötilojen Säätö Processing: Aloitetaan 600 ms Sleep')
         time.sleep(600)
 
 except Exception, e:
         syslog.syslog(syslog.LOG_ERR, 'Lamposerveri, ei saada yhteyttä lämpötiloihin: ')
-#	print(e)
+	print(e)
         pass
