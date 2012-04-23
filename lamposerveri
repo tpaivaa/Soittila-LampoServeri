@@ -40,6 +40,9 @@ def toint(file):
     i = int(d)
     return i
 
+def hex2dec(s):
+    return int(s, 16)
+
 def getLampo(file):
     f = open(file)
     s = f.readline()
@@ -107,8 +110,6 @@ def saadaOff(rele):
             c += 1
     return 'ReleSäätö Off  ei onnistu'
 
-def hex2dec(s):
-    return int(s, 16)
 
 try:
     while(1):
