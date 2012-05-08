@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+import os
+import soittilaFiles
+import httplib
+import time
+import syslog
+from time import strftime,localtime
+
+def tilat():
+	connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
+	connection.request('GET', '/rele/1')
+	tila = connection.getresponse()
+	rele1 = tila.read()
+	connection.request('GET', '/rele/2')
+	tila = connection.getresponse()
+	rele2 = tila.read()
+	connection.request('GET', '/rele/3')
+	tila = connection.getresponse()
+	rele3 = tila.read()
+	connection.request('GET', '/rele/7')
+	tila = connection.getresponse()
+	rele7 = tila.read()
+	connection.request('GET', '/rele/8')
+	tila = connection.getresponse()
+	rele8 = tila.read()
+	connection.request('GET', '/rele/A')
+	tila = connection.getresponse()
+	rele10 = tila.read()
+	connection.close()
+	if rele1 == '1023':
+		rele1 = '1'
+	else:
+		rele1 = '0'
+	if rele2 == '1023':
+		rele2 = '1'
+	else:
+		rele2 = '0'
+	if rele3 == '1023':
+		rele3 = '1'
+	else:
+		rele3 = '0'
+	return {'rele1':rele1, 'rele2':rele2, 'rele3':rele3, 'rele7':rele7, 'rele8':rele8, 'rele10':rele10}
+
+def getLampo(file):
+	f = open(file)
+    s = f.readline()
+    d = round(float(s.strip()), 0)
+    l = int(d)
+    return l
+	
+def lammot():
+	akWcLattia = getLampo(akWcLattia)
+	khh = getLampo(khh)
+	olohuone = getLampo(olohuone)
+	makuuhuone = getLampo(makuuhuone)
+	sauna = getLampo(sauna)
+	return {'akWcLattia':akWcLattia, 'khh':khh, 'olohuone':olohuone, 'makuuhuone':makuuhuone, 'sauna': sauna} 
+	
+while 1:
+	khhYraja = 23
+	khhAraja = 22
+	khhLattiaYraja = 32
+	khhLattiaAraja = 28
+	olohuoneHigh = 22
+	saunaHigh = 21
+
+	t = tilat()
+	l = lammot()
+	
+	if t['rele1'] == '1':
+
