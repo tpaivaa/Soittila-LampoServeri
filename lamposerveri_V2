@@ -64,9 +64,28 @@ while 1:
 	khhLattiaAraja = 28
 	olohuoneHigh = 22
 	saunaHigh = 21
-
+	olohuone = 23
+	
+	aikaNyt = time.strftime("%H%M", localtime())
 	t = tilat()
 	l = lammot()
 	
 	if t['rele1'] == '1':
-
+		if l['akWcLattia'] > khhYraja:
+			rele1saato = '/off/1'		
+	if t['rele1'] == '0':
+		if l['akWcLattia'] < khhAraja:
+			rele1saato = '/on/1'
+	if t['rele8'] == '0':
+		if l['olohuone'] < olohuone:
+			rele8saato = '/on/8'
+	if t['rele2'] == '1':
+		if l['sauna'] > saunaHigh :
+			rele2saato = '/off/2'		
+	if t['rele2'] == '0':
+		if l['sauna'] < saunaHigh:
+			rele2saato = '/on/2'
+	if aikaNyt > '1800' or aikaNyt < '0400' and t['rele2'] == '0'
+		rele2saato = '/on/2'
+	else:
+		relesaato = '/off/2'

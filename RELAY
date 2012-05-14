@@ -1,0 +1,19 @@
+There is two relay cards controlled by Arduino
+One is 4 relay card and second is 8 relay card.
+
+Relaycard 1 controlled by Arduino Analog pins 5 to 2
+Rele1 = Analog pin5 = Not In use
+Rele2 = Analog pin4 = khh
+Rele3 = Analog pin3 = Kitchen floor
+Rele4 = Analog pin2 = Not In use
+
+Relaycard2 controlled by analog pins 1 to 0 and digital pins 3 to 8
+Rele5 = Analog pin1 = Not In use
+Rele6 = Analog pin0 = Not In use
+Rele7 = Digital pin 3 = Floor pump
+Rele8 = Digital pin 4 = Main pump
+Rele9 = Digital pin 5 = Not In use
+ReleA = Digital pin 6 = Pesuhuone (upstairs)
+ReleB = Digital pin 7 = Not In use
+ReleC = Digital pin 8 = Attack Heating on/off
+
