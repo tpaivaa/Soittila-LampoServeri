@@ -17,3 +17,5 @@ ReleA = Digital pin 6 = Pesuhuone (upstairs)
 ReleB = Digital pin 7 = Not In use
 ReleC = Digital pin 8 = Attack Heating on/off
 
+Attack heating has indoor sensor on livingroom and can be used for heating.
+Or manually swithed off controlled by Soittila_lampoServeri
