@@ -8,40 +8,46 @@ import syslog
 from time import strftime,localtime
 
 def tilat():
-	connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
-	connection.request('GET', '/rele/1')
-	tila = connection.getresponse()
-	rele1 = tila.read()
-	connection.request('GET', '/rele/2')
-	tila = connection.getresponse()
-	rele2 = tila.read()
-	connection.request('GET', '/rele/3')
-	tila = connection.getresponse()
-	rele3 = tila.read()
-	connection.request('GET', '/rele/7')
-	tila = connection.getresponse()
-	rele7 = tila.read()
-	connection.request('GET', '/rele/8')
-	tila = connection.getresponse()
-	rele8 = tila.read()
-	connection.request('GET', '/rele/A')
-	tila = connection.getresponse()
-	rele10 = tila.read()
-	connection.close()
-	if rele1 == '1023':
-		rele1 = '1'
-	else:
-		rele1 = '0'
-	if rele2 == '1023':
-		rele2 = '1'
-	else:
-		rele2 = '0'
-	if rele3 == '1023':
-		rele3 = '1'
-	else:
-		rele3 = '0'
-	return {'rele1':rele1, 'rele2':rele2, 'rele3':rele3, 'rele7':rele7, 'rele8':rele8, 'rele10':rele10}
-
+	try:
+		connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
+		connection.request('GET', '/rele/1')
+		tila = connection.getresponse()
+		rele1 = tila.read()
+		connection.request('GET', '/rele/2')
+		tila = connection.getresponse()
+		rele2 = tila.read()
+		connection.request('GET', '/rele/3')
+		tila = connection.getresponse()
+		rele3 = tila.read()
+		connection.request('GET', '/rele/7')
+		tila = connection.getresponse()
+		rele7 = tila.read()
+		connection.request('GET', '/rele/8')
+		tila = connection.getresponse()
+		rele8 = tila.read()
+		connection.request('GET', '/rele/A')
+		tila = connection.getresponse()
+		rele10 = tila.read()
+		connection.close()
+		if rele1 == '1023':
+			rele1 = '1'
+		else:
+			rele1 = '0'
+		if rele2 == '1023':
+			rele2 = '1'
+		else:
+			rele2 = '0'
+		if rele3 == '1023':
+			rele3 = '1'
+		else:
+			rele3 = '0'
+		return {'rele1':rele1, 'rele2':rele2, 'rele3':rele3, 'rele7':rele7, 'rele8':rele8, 'rele10':rele10}
+	
+	except Exception, e:
+		syslog.syslog('>Lamposerveri Säätö Cannot get states ************************>')
+		print('Cannot get states')
+		pass
+	
 def getLampo(file):
 	f = open(file)
 	s = f.readline()
@@ -56,110 +62,155 @@ def lammot():
 	olohuone = getLampo(sf.olohuone)
 	makuuhuone = getLampo(sf.makuuhuone)
 	sauna = getLampo(sf.sauna)
-	return {'akWcLattia':akWcLattia, 'khh':khh, 'olohuone':olohuone, 'makuuhuone':makuuhuone, 'sauna': sauna} 
+	ulkoE = getLampo(sf.ulkoE)
+	ulkoP = getLampo(sf.ulkoP)
+	return {'akWcLattia':akWcLattia, 'khh':khh, 'olohuone':olohuone, 'makuuhuone':makuuhuone, 'sauna': sauna, 'ulkoE':ulkoE, 'ulkoP':ulkoP} 
 
-def saada(r3, r2, r8, r10):
-	connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
-	if r3 == 'on':
-		connection.request('GET', '/on/3')
-	elif r3 == 'off':	
-		connection.request('GET', '/off/3')
-	else:
-		connection.request('GET', '/rele/3')
-	tila = connection.getresponse()
-	r3after = tila.read()
-	if r2 == 'on':
-		connection.request('GET', '/on/2')
-	elif r2 == 'off':
-		connection.request('GET', '/off/2')
-	else:
-		connection.request('GET', '/rele/2')
-	tila = connection.getresponse()
-	r2after = tila.read()
-	if r8 == 'on':
-		connection.request('GET', '/on/8')
-	elif r8 == 'off':
-		connection.request('GET', '/off/8')
-	else:
-		connection.request('GET', '/rele/8')	
-	tila = connection.getresponse()
-	r8after = tila.read()
-	if r10 == 'on':
-		connection.request('GET', '/on/A')
-	elif r10 == 'off':
-		connection.request('GET', '/off/A')
-	else:
-		connection.request('GET', '/rele/A')	
-	tila = connection.getresponse()
-	r10after = tila.read()
-	connection.close() 
-	return {'rele3':r3after, 'rele2':r2after, 'rele8':r8after, 'rele10':r10after}
-	
-try:	
-	while 1:
-		khhYraja = 23
-		khhAraja = 22
-		khhLattiaYraja = 32
-		khhLattiaAraja = 28
-		olohuoneHigh = 22
-		saunaHigh = 22
-		olohuone = 23
-		kiertoLahto = 0
-		kiertoPaluu = 0
-		rele2saato = '/rele/2'
-		rele3saato = '/rele/3'
-		rele8saato = '/rele/8'
-		rele10saato = '/rele/A'
-		
-		aikaNyt = time.strftime("%H%M", localtime())
-		t = tilat()
-		l = lammot()
-		syslog.syslog('>Lamposerveri Säätö Processing Loop started************************>')
-		print 'ennen säätöä'
-		print t
-		print '/n'
-		print l
-		print '/n'
-		if t['rele3'] == '1':
-			if l['akWcLattia'] > khhLattiaYraja:
-				rele3saato = 'off'		
-		if t['rele3'] == '0':
-			if l['akWcLattia'] < khhLattiaAraja:
-				rele3saato = 'on'
-				if t['rele8'] == '0':
-					rele8saato = 'on'
-		if t['rele8'] == '0':
-			if l['olohuone'] < olohuone:
-				rele8saato = 'on'
-		if t['rele10'] == '1':
-			if l['sauna'] > saunaHigh :
-				rele10saato = 'off'		
-		if t['rele10'] == '0':
-			if l['sauna'] < saunaHigh:
-				rele10saato = 'on'
-		if (aikaNyt > '1800' or aikaNyt < '0400') and t['rele2'] == '0':
-			rele2saato = 'on'
+def saada(r3, r2, r7, r8, r10):
+	try:
+		connection = httplib.HTTPConnection('10.10.10.54', timeout=3)
+		if r3 == 'on':
+			connection.request('GET', '/on/3')
+			tila = connection.getresponse()
+			r3after = tila.read()
+		elif r3 == 'off':	
+			connection.request('GET', '/off/3')
+			tila = connection.getresponse()
+			r3after = tila.read()
 		else:
-			rele2saato = 'off'
-		#heikki = (aikaNyt > '1800' or aikaNyt < '0400') and t['rele2'] == '0'	
-		#print heikki 
-		print rele2saato
-		print rele3saato
-		print rele8saato
-		print rele10saato
-		s = saada(rele3saato, rele2saato, rele8saato, rele10saato)	
-		print s
-		t = tilat()
-		l = lammot()
-		print 'säädön jälkeen ********'
-		print t
-		print '/n'
-		print l
-		print '/n'
-		syslog.syslog('>Lamposerveri Säätö Processing Loop stopped************************>')	
-		time.sleep(600)	
-		
-except Exception, e:
-        syslog.syslog(syslog.LOG_ERR, 'Lamposerveri, ei saada yhteyttä lämpötiloihin: ')
-	print(e)
-        pass		
+			connection.request('GET', '/rele/3')
+			tila = connection.getresponse()
+			r3after = tila.read()
+		if r2 == 'on':
+			connection.request('GET', '/on/2')
+			tila = connection.getresponse()
+			r2after = tila.read()
+		elif r2 == 'off':
+			connection.request('GET', '/off/2')
+			tila = connection.getresponse()
+			r2after = tila.read()
+		else:
+			connection.request('GET', '/rele/2')
+			tila = connection.getresponse()
+			r2after = tila.read()
+		if r7 == 'on':
+			connection.request('GET', '/on/7')
+			tila = connection.getresponse()
+			r7after = tila.read()
+		elif r7 == 'off':
+			connection.request('GET', '/off/7')
+			tila = connection.getresponse()
+			r7after = tila.read()
+		else:
+			connection.request('GET', '/rele/7')	
+			tila = connection.getresponse()
+			r7after = tila.read()
+		if r8 == 'on':
+			connection.request('GET', '/on/8')
+			tila = connection.getresponse()
+			r8after = tila.read()
+		elif r8 == 'off':
+			connection.request('GET', '/off/8')
+			tila = connection.getresponse()
+			r8after = tila.read()
+		else:
+			connection.request('GET', '/rele/8')	
+			tila = connection.getresponse()
+			r8after = tila.read()
+		if r10 == 'on':
+			connection.request('GET', '/on/A')
+			tila = connection.getresponse()
+			r10after = tila.read()
+		elif r10 == 'off':
+			connection.request('GET', '/off/A')
+			tila = connection.getresponse()
+			r10after = tila.read()
+		else:
+			connection.request('GET', '/rele/A')	
+			tila = connection.getresponse()
+			r10after = tila.read()
+		connection.close() 
+		return {'rele3':r3after, 'rele2':r2after, 'rele7':r7after, 'rele8':r8after, 'rele10':r10after}
+	except Exception, e:
+		syslog.syslog('>Lamposerveri Säätö Cannot make adjust ************************>')
+		print('Cannot adjust')
+		pass
+while 1:	
+	try:	
+	
+			khhYraja = 23
+			khhAraja = 22
+			khhLattiaYraja = 32
+			khhLattiaAraja = 28
+			olohuoneHigh = 22
+			saunaHigh = 22
+			olohuone = 23
+			kiertoLahto = 0
+			kiertoPaluu = 0
+			rele2saato = '/rele/2'
+			rele3saato = '/rele/3'
+			rele8saato = '/rele/8'
+			rele7saato = '/rele/7'
+			rele10saato = '/rele/A'
+			
+			aikaNyt = time.strftime("%H%M", localtime())
+			t = tilat()
+			l = lammot()
+			syslog.syslog('>Lamposerveri Säätö Processing Loop started************************>')
+
+			if t['rele3'] == '1':
+				if l['akWcLattia'] > khhLattiaYraja:
+					rele3saato = 'off'
+					rele2saato = 'off'
+					print 'releet 2 ja 3 off'
+					if t['rele8'] == '1':
+						rele8saato = 'off'
+						print 'rele 8 off'
+						
+			if t['rele3'] == '0':
+				if l['akWcLattia'] < khhLattiaAraja:
+					rele3saato = 'on'
+					rele2saato = 'on'
+					print 'releet 2 ja 3 on'
+					if t['rele8'] == '0':
+						rele8saato = 'on'
+						print 'rele 8 on'
+						
+			if t['rele7'] == '0' and rele3saato == 'on':
+				rele7saato = 'on'
+				
+			if t['rele7'] == '1' and rele3saato == 'off':
+				rele7saato = 'off'
+				
+				
+			'''if t['rele8'] == '0':
+				if l['olohuone'] < olohuone:
+					rele8saato = 'on'
+			if t['rele10'] == '1':
+				if l['sauna'] > saunaHigh :
+					rele10saato = 'off'		
+			if t['rele10'] == '0':
+				if l['sauna'] < saunaHigh:
+					rele10saato = 'on'
+			if (aikaNyt > '1800' or aikaNyt < '0400') and t['rele2'] == '0':
+				rele2saato = 'on'
+			else:
+				rele2saato = 'off'
+			'''
+			s = saada(rele3saato, rele2saato, rele7saato, rele8saato, rele10saato)	
+			#print s
+			t = tilat()
+			l = lammot()
+			'''print 'säädön jälkeen ********'
+			print t
+			print '\n'
+			print l
+			print '\n'
+			'''
+			syslog.syslog('>Lamposerveri Säätö Processing Loop stopped************************>')	
+			time.sleep(600)	
+			
+	except Exception, e:
+		syslog.syslog(syslog.LOG_ERR, 'Lamposerveri, ei saada yhteyttä lämpötiloihin: ')
+		print(e)
+		pass		
