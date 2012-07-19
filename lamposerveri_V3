@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+import os
+import soittilaFiles as sf
+import httplib
+import time
+import syslog
+from time import strftime,localtime
+import lamposerveri_V2_1 as ls
+
+
+l = ls.lammot()
+
+

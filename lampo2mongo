@@ -65,6 +65,7 @@ try:
         lampotilat = db.soittila_lampotilat
         lampotilat.insert(uudet_lampotilat)
         syslog.syslog('Lämpötilat päivitetty')
+        disconnect()
         time.sleep(600)
 
 except Exception, e:

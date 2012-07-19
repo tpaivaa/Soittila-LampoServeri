@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+# -*- coding: iso-8859-15 -*-
+
+import os
+import time
+import syslog
+import pymongo
+from pymongo import Connection
+import soittilaFiles as f
+import datetime
+from datetime import datetime
+from time import strftime
+import lamposerveri_V2_1 as ls
+
+
+
+try:
+    while(1):
+        syslog.syslog('Realy states to Mongo datebase started')
+        
+        t = ls.tilat()
+        rele2state = t['rele2']
+        rele2dict = {'state' : rele2state}
+        rele3state = t['rele3']
+        rele3dict = {'state' : rele3state}
+        rele7state = t['rele7']
+        rele7dict = {'state' : rele7state}
+        rele8state = t['rele8']
+        rele8dict = {'state' : rele8state}
+        releAstate = "0"
+        releAdict = {'state' : releAstate}
+        releCstate = "0"
+        releCdict = {'state' : releCstate}
+        
+        connection = Connection('localhost', 27017)
+        db = connection.Soittila_releet
+        db.Soittila_releet.update({'name': 'rele2'},{ "$set": rele2dict })
+        db.Soittila_releet.update({'name': 'rele3'},{ "$set": rele3dict })
+        db.Soittila_releet.update({'name': "rele7"},{ "$set": rele7dict })
+        db.Soittila_releet.update({'name': "rele8"},{ "$set": rele8dict })
+        db.Soittila_releet.update({'name': "releA"},{ "$set": releAdict })
+        db.Soittila_releet.update({'name': "releC"},{ "$set": releCdict })
+        syslog.syslog('Reletilat pÃ€ivitetty')
+        time.sleep(600)
+        
+except Exception, e:
+    #print e
+    syslog.syslog(syslog.LOG_ERR,'Releet2Mongo ollaan errorissa')
+    pass
