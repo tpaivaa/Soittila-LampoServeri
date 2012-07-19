@@ -207,7 +207,7 @@ try:
 		'''
 		s = saada(rele3saato, rele2saato, rele7saato, rele8saato, rele10saato)
 		saadetty = ('Rele2: ' + s['rele2'] + ' ** Rele3: ' + s['rele3'] + ' ** Rele7: ' + s['rele7'] + ' ** Rele8: ' + s['rele8'] + ' ** ReleA: ' + s['rele10'])
-		print saadetty
+		#print saadetty
 		syslog.syslog(saadetty)
 		syslog.syslog('>Lamposerveri Säätö Processing Loop stopped************************>')
 		time.sleep(600)
