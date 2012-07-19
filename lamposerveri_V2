@@ -45,7 +45,7 @@ def tilat():
 	
 	except Exception, e:
 		syslog.syslog('>Lamposerveri Säätö Cannot get states ************************>')
-		print('Cannot get states')
+		#print('Cannot get states')
 		pass
 	
 def getLampo(file):
@@ -129,11 +129,19 @@ def saada(r3, r2, r7, r8, r10):
 			connection.request('GET', '/rele/A')	
 			tila = connection.getresponse()
 			r10after = tila.read()
-		connection.close() 
+		connection.close()
+		if r2after == '1023':
+			r2after = '1'
+		else:
+			r2after = '0'
+		if r3after == '1023':
+			r3after = '1'
+		else:
+			r3after = '0'
 		return {'rele3':r3after, 'rele2':r2after, 'rele7':r7after, 'rele8':r8after, 'rele10':r10after}
 	except Exception, e:
 		syslog.syslog('>Lamposerveri Säätö Cannot make adjust ************************>')
-		print('Cannot adjust')
+		#print('Cannot adjust')
 		pass
 try:	
 	while(1):	
@@ -158,28 +166,28 @@ try:
 		l = lammot()
 		syslog.syslog('>Lamposerveri Säätö Processing Loop started************************>')
 
-		if t['rele3'] == '1':
+		if t['rele2'] == '1':
 			if l['akWcLattia'] > khhLattiaYraja:
 				rele3saato = 'off'
 				rele2saato = 'off'
-				print 'releet 2 ja 3 off'
+				#print 'releet 2 ja 3 off'
 				if t['rele8'] == '1':
 					rele8saato = 'off'
-					print 'rele 8 off'
+					#print 'rele 8 off'
 					
-		if t['rele3'] == '0':
+		if t['rele2'] == '0':
 			if l['akWcLattia'] < khhLattiaAraja:
 				rele3saato = 'on'
 				rele2saato = 'on'
-				print 'releet 2 ja 3 on'
-				if t['rele8'] == '0':
-					rele8saato = 'on'
-					print 'rele 8 on'
+				#print 'releet 2 ja 3 on'
+				if t['rele7'] == '0':
+					rele7saato = 'on'
+					#print 'rele 8 on'
 					
-		if t['rele7'] == '0' and rele3saato == 'on':
+		if t['rele7'] == '0' and rele2saato == 'on':
 			rele7saato = 'on'
 			
-		if t['rele7'] == '1' and rele3saato == 'off':
+		if t['rele7'] == '1' and rele2saato == 'off':
 			rele7saato = 'off'
 			
 			
@@ -197,11 +205,14 @@ try:
 		else:
 			rele2saato = 'off'
 		'''
-		s = saada(rele3saato, rele2saato, rele7saato, rele8saato, rele10saato)	
-		syslog.syslog('>Lamposerveri Säätö Processing Loop stopped************************>')	
+		s = saada(rele3saato, rele2saato, rele7saato, rele8saato, rele10saato)
+		saadetty = ('Rele2: ' + s['rele2'] + ' ** Rele3: ' + s['rele3'] + ' ** Rele7: ' + s['rele7'] + ' ** Rele8: ' + s['rele8'] + ' ** ReleA: ' + s['rele10'])
+		print saadetty
+		syslog.syslog(saadetty)
+		syslog.syslog('>Lamposerveri Säätö Processing Loop stopped************************>')
 		time.sleep(600)
 			
 except Exception, e:
 	syslog.syslog(syslog.LOG_ERR, 'Lamposerveri, ei saada yhteyttä lämpötiloihin: ')
-	#print(e)
+	print(e)
 	pass		
