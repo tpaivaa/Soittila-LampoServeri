@@ -13,8 +13,12 @@
     <a class="otsake" href="ajax.html">Kaikki</a>
     <div id='chart_div'></div>
     <div id='chart_div_1'></div>
+    <div id='switch_status'></div>
+    <div class='rele_status'></div>
+
 <script type="text/javascript">
-var khh = olohuone = makuuhuone = akWcLattia = puukattila = 0;
+var khh = olohuone = makuuhuone = akWcLattia = puukattila = kattilaSw = 0;
+var rele2 = rele3 = rele7 = rele8 = 0;
 
 $.getJSON('https://paawo.dy.fi:18443/viimetilat.html', function(tilat) {
     khh = tilat.khh;
@@ -22,9 +26,17 @@ $.getJSON('https://paawo.dy.fi:18443/viimetilat.html', function(tilat) {
     olohuone = tilat.olohuone;
     puukattila = tilat.puukattila;
     makuuhuone = tilat.makuuhuone;
-});    
-      google.load('visualization', '1', {packages:['gauge']});
-      //google.setOnLoadCallback(drawChart);
+    kattilaSw = tilat.kattilaSw;
+});
+$.getJSON('https://paawo.dy.fi:18443/reletilat.html', function(releTilat) {
+    rele2 = releTilat.rele2;
+    rele3 = releTilat.rele3;
+    rele7 = releTilat.rele7;
+    rele8 = releTilat.rele8;
+});
+    
+google.load('visualization', '1', {packages:['gauge']});
+//google.setOnLoadCallback(drawChart);
       
 function drawChart() {
         var data = new google.visualization.DataTable();
@@ -65,12 +77,50 @@ function drawChartHot() {
         var chart = new google.visualization.Gauge(document.getElementById('chart_div_1'));
         chart.draw(data1, options1);
       }
-      
+function kattilaStatus() {
+        if (kattilaSw=='1') {
+            $('#switch_status').html('<figure id="Attack_kattila"><img height=100 width=100 id="kattilaSw" src="styles/on.png" /><figcaption><a href="kattilaSw.html">Attack Kattila</a></figcaption></figure>');
+        }
+        else{
+            $('#switch_status').html('<figure id="Attack_kattila"><img height=100 width=100 id="kattilaSw" src="styles/off.png" /><figcaption>Attack kattila</figcaption></figure>');
+        }
+    }
+function releStatus() {
+        if (rele2=='1') {
+            $('div.rele_status').prepend('<figure id="rele2"><img height=100 width=100 id="rele2" src="styles/on.png" /><figcaption>rele2</figcaption></figure>');
+        }
+        else{
+            $('div.rele_status').prepend('<figure id="rele2"><img height=100 width=100 id="rele2" src="styles/off.png" /><figcaption>rele2</figcaption></figure>');
+        }
+        if (rele3=='1') {
+            $('div.rele_status').append('<figure id="rele3"><img height=100 width=100 id="rele3" src="styles/on.png" /><figcaption>rele3</figcaption></figure>');
+        }
+        else{
+            $('div.rele_status').append('<figure id="rele3"><img height=100 width=100 id="rele3" src="styles/off.png" /><figcaption>rele3</figcaption></figure>');
+        }
+        if (rele7=='1') {
+            $('div.rele_status').append('<figure id="rele7"><img height=100 width=100 id="rele7" src="styles/on.png" /><figcaption>rele7</figcaption></figure>');
+        }
+        else{
+            $('div.rele_status').append('<figure id="rele7"><img height=100 width=100 id="rele7" src="styles/off.png" /><figcaption>rele7</figcaption></figure>');
+        }
+        if (rele8=='1') {
+            $('div.rele_status').append('<figure id="rele8"><img height=100 width=100 id="rele8" src="styles/on.png" /><figcaption>rele8</figcaption></figure>');
+        }
+        else{
+            $('div.rele_status').append('<figure id="rele8"><img height=100 width=100 id="rele8" src="styles/off.png" /><figcaption>rele8</figcaption></figure>');
+        }
+    }
+    
 $(function(){
     drawChart();
     drawChartHot();
-    setInterval( "drawChart()", 10000 );
+    kattilaStatus();
+    releStatus();
+    setInterval( "drawChart()", 15000 );
     setInterval( "drawChartHot()", 15000 );
+    setInterval( "kattilaStatus()", 15000 );
+  //  setInterval( "releStatus()", 15000 );
 });    
 </script>
 </body>

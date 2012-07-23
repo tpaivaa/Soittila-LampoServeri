@@ -6,6 +6,8 @@ import httplib
 import time
 import syslog
 from time import strftime,localtime
+import pymongo
+from pymongo import Connection
 
 def tilat():
 	try:
@@ -210,7 +212,36 @@ try:
 		#print saadetty
 		syslog.syslog(saadetty)
 		syslog.syslog('>Lamposerveri Säätö Processing Loop stopped************************>')
+		syslog.syslog('Realy states to Mongo datebase started')
+		
+		releAika = time.strftime("%H%M", localtime())
+		
+		#t = ls.tilat()
+		rele2state = t['rele2']
+		rele2dict = {'state' : rele2state , 'date' : releAika}
+		rele3state = t['rele3']
+		rele3dict = {'state' : rele3state , 'date' : releAika}
+		rele7state = t['rele7']
+		rele7dict = {'state' : rele7state , 'date' : releAika}
+		rele8state = t['rele8']
+		rele8dict = {'state' : rele8state , 'date' : releAika}
+		releAstate = "0"
+		releAdict = {'state' : releAstate , 'date' : releAika}
+		releCstate = "0"
+		releCdict = {'state' : releCstate , 'date' : releAika}
+		
+		connection = Connection('localhost', 27017)
+		db = connection.Soittila_releet
+		db.Soittila_releet.update({'name': 'rele2'},{ "$set": rele2dict })
+		db.Soittila_releet.update({'name': 'rele3'},{ "$set": rele3dict })
+		db.Soittila_releet.update({'name': "rele7"},{ "$set": rele7dict })
+		db.Soittila_releet.update({'name': "rele8"},{ "$set": rele8dict })
+		db.Soittila_releet.update({'name': "releA"},{ "$set": releAdict })
+		db.Soittila_releet.update({'name': "releC"},{ "$set": releCdict })
+		syslog.syslog('Reletilat pÃ€ivitetty')
+		
 		time.sleep(600)
+		
 			
 except Exception, e:
 	syslog.syslog(syslog.LOG_ERR, 'Lamposerveri, ei saada yhteyttä lämpötiloihin: ')

@@ -17,20 +17,20 @@ import lamposerveri_V2_1 as ls
 try:
     while(1):
         syslog.syslog('Realy states to Mongo datebase started')
-        
+        releAika = time.strftime("%H%M", localtime())
         t = ls.tilat()
         rele2state = t['rele2']
-        rele2dict = {'state' : rele2state}
+        rele2dict = {'state' : rele2state , 'date' : releAika}
         rele3state = t['rele3']
-        rele3dict = {'state' : rele3state}
+        rele3dict = {'state' : rele3state , 'date' : releAika}
         rele7state = t['rele7']
-        rele7dict = {'state' : rele7state}
+        rele7dict = {'state' : rele7state , 'date' : releAika}
         rele8state = t['rele8']
-        rele8dict = {'state' : rele8state}
+        rele8dict = {'state' : rele8state , 'date' : releAika}
         releAstate = "0"
-        releAdict = {'state' : releAstate}
+        releAdict = {'state' : releAstate , 'date' : releAika}
         releCstate = "0"
-        releCdict = {'state' : releCstate}
+        releCdict = {'state' : releCstate , 'date' : releAika}
         
         connection = Connection('localhost', 27017)
         db = connection.Soittila_releet
