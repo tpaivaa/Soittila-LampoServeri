@@ -17,8 +17,8 @@
     <div class='rele_status'></div>
 
 <script type="text/javascript">
-var khh = olohuone = makuuhuone = akWcLattia = puukattila = kattilaSw = 0;
-var rele2 = rele3 = rele7 = rele8 = 0;
+var khh = olohuone = makuuhuone = akWcLattia = puukattila = kattilaSw = ulkosauna = 0;
+var rele1 = rele2 = rele3 = rele4 = rele5 = rele6 = rele7 = rele8 = 0;
 
 $.getJSON('https://paawo.dy.fi:18443/viimetilat.html', function(tilat) {
     khh = tilat.khh;
@@ -27,10 +27,15 @@ $.getJSON('https://paawo.dy.fi:18443/viimetilat.html', function(tilat) {
     puukattila = tilat.puukattila;
     makuuhuone = tilat.makuuhuone;
     kattilaSw = tilat.kattilaSw;
+    pihaSauna = tilat.ulkosauna;
 });
 $.getJSON('https://paawo.dy.fi:18443/reletilat.html', function(releTilat) {
+    rele1 = releTilat.rele1;
     rele2 = releTilat.rele2;
     rele3 = releTilat.rele3;
+    rele4 = releTilat.rele4;
+    rele5 = releTilat.rele5;
+    rele6 = releTilat.rele6;
     rele7 = releTilat.rele7;
     rele8 = releTilat.rele8;
 });
@@ -64,7 +69,8 @@ function drawChartHot() {
         data1.addColumn('string', 'Label');
         data1.addColumn('number', 'Value');        
         data1.addRows([
-          ['Puukattila', puukattila]
+          ['Puukattila', puukattila],
+          ['Pihasauna', ulkosauna]
         ]);
         var options1 = {
           min: 0, max: 100,  
@@ -86,6 +92,12 @@ function kattilaStatus() {
         }
     }
 function releStatus() {
+        if (rele1=='1') {
+            $('div.rele_status').prepend('<figure id="rele1"><img height=100 width=100 id="rele1" src="styles/on.png" /><figcaption>rele1</figcaption></figure>');
+        }
+        else{
+            $('div.rele_status').prepend('<figure id="rele1"><img height=100 width=100 id="rele1" src="styles/off.png" /><figcaption>rele1</figcaption></figure>');
+        }
         if (rele2=='1') {
             $('div.rele_status').prepend('<figure id="rele2"><img height=100 width=100 id="rele2" src="styles/on.png" /><figcaption>rele2</figcaption></figure>');
         }
@@ -97,6 +109,24 @@ function releStatus() {
         }
         else{
             $('div.rele_status').append('<figure id="rele3"><img height=100 width=100 id="rele3" src="styles/off.png" /><figcaption>rele3</figcaption></figure>');
+        }
+        if (rele4=='1') {
+            $('div.rele_status').append('<figure id="rele4"><img height=100 width=100 id="rele4" src="styles/on.png" /><figcaption>rele4</figcaption></figure>');
+        }
+        else{
+            $('div.rele_status').append('<figure id="rele4"><img height=100 width=100 id="rele4" src="styles/off.png" /><figcaption>rele4</figcaption></figure>');
+        } 
+        if (rele5=='1') {
+            $('div.rele_status').append('<figure id="rele5"><img height=100 width=100 id="rele5" src="styles/on.png" /><figcaption>rele5</figcaption></figure>');
+        }
+        else{
+            $('div.rele_status').append('<figure id="rele5"><img height=100 width=100 id="rele5" src="styles/off.png" /><figcaption>rele5</figcaption></figure>');
+        }
+        if (rele6=='1') {
+            $('div.rele_status').append('<figure id="rele6"><img height=100 width=100 id="rele6" src="styles/on.png" /><figcaption>rele6</figcaption></figure>');
+        }
+        else{
+            $('div.rele_status').append('<figure id="rele6"><img height=100 width=100 id="rele6" src="styles/off.png" /><figcaption>rele6</figcaption></figure>');
         }
         if (rele7=='1') {
             $('div.rele_status').append('<figure id="rele7"><img height=100 width=100 id="rele7" src="styles/on.png" /><figcaption>rele7</figcaption></figure>');

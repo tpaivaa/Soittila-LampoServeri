@@ -42,7 +42,7 @@ def timestampToDate(aikaleima):
 try:
     while(1):
         syslog.syslog('Lampötilojen Processing started')
-        connection = Connection('localhost', 27017)
+        connection = Connection('10.10.10.55', 27017)
         db = connection.soittila_lampotilat
         uudet_lampotilat = [{"anturi": "puukattila","lampotila": getTemp(f.puukattila),"date": getAika(), "stamp": getTimeStamp()},
             {"anturi": "varaajaUp","lampotila": getTemp(f.varaajaUp),"date": getAika(),"stamp": getTimeStamp()},
@@ -61,6 +61,7 @@ try:
             {"anturi": "khh","lampotila": getTemp(f.khh),"date": getAika(),"stamp": getTimeStamp()},
             {"anturi": "olohuone","lampotila": getTemp(f.olohuone),"date": getAika(),"stamp": getTimeStamp()}, 
             {"anturi": "makuuhuone","lampotila": getTemp(f.makuuhuone),"date": getAika(),"stamp": getTimeStamp()}, 
+            {"anturi": "ulkosauna","lampotila": getTemp(f.ulkosauna),"date": getAika(),"stamp": getTimeStamp()}, 
             {"anturi": "sauna","lampotila": getTemp(f.sauna),"date": getAika(),"stamp": getTimeStamp()}]
         lampotilat = db.soittila_lampotilat
         lampotilat.insert(uudet_lampotilat)
