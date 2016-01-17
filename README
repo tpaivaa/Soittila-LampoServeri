@@ -1,3 +1,5 @@
+DEPRICATED <h1> tag
+
 Lamposerveri:
 Controls heating on my home: 
 analysing temperatures and time of the day and other statistics to command relayServer via http
